@@ -10,7 +10,7 @@
 
 <body>
     <script>
-        var surName, secondName, name;
+        var surName, secondName, name, stat, stat_1;
         function checkString(str) {
             str_ = prompt(`input your ${str}`);
             while(!(str_) || !isNaN(str_) || !(str_[0] == str_[0].toUpperCase())) {
@@ -34,25 +34,13 @@
         age = checkAge(age);
 
         let gender = confirm('Are you a man?');
-        var stat = '';
         var stat_1 = 'none';
-        if (gender) {
-            gender = 'man';
-        }
-        else {
-            gender = 'wooman';
-        }
-        if (age < 18) {
-            stat = 'minor';
-        } else {
-            stat = 'adult';
-        }
-        if ((age > 65) || ((age > 60) && (gender === 'wooman'))) {            
-            stat_1 = 'yes';
-        }
+        gender = (gender) ? 'man' : 'woman';    
+        stat = (age < 18) ? 'minor' : 'adult';
+
+        stat_1 = ((age >= 65) || ((age >= 60) && (gender === 'woman'))) ? 'yes' : 'no';
       
-        
-        alert(`You are ${surName} ${name} ${secondName} \nYour age in years is ${age} \nYour age in days is ${age * 365} \nYour are ${stat} \nYour gender is ${gender} \nYou are retired: ${stat_1} `);
+        alert(`You are: ${surName} ${name} ${secondName} \nYour age in years is: ${age} \nYour age in days is: ${age * 365} \nYour are: ${stat} \nYour gender is: ${gender} \nYou are retired: ${stat_1} `);
 
 
     </script>
