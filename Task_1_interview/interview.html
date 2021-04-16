@@ -23,18 +23,16 @@
         secondName = checkString('secondName');
         name = checkString('name');
         let age = 0;
-
         function checkAge(age) {
             age = prompt("input your age in years");    
             while (!(age) || isNaN(age) || (age < 5) || (age > 120)) {
-                age = prompt("input valid data");
+                age = prompt("input valid data (5 years < age < 120 years)");
             }
-            return age;
+            return Math.round(age);
         }
         age = checkAge(age);
 
         let gender = confirm('Are you a man?');
-        var stat_1 = 'none';
         gender = (gender) ? 'man' : 'woman';    
         stat = (age < 18) ? 'minor' : 'adult';
 
