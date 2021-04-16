@@ -10,7 +10,7 @@
 
 <body>
     <script>
-        var surName, secondName, name, stat, stat_1;
+        var surName, secondName, name, age, stat, stat_1;
         function checkString(str) {
             str_ = prompt(`input your ${str}`);
             while(!(str_) || !isNaN(str_) || !(str_[0] == str_[0].toUpperCase())) {
@@ -22,7 +22,6 @@
         surName = checkString('surName');
         secondName = checkString('secondName');
         name = checkString('name');
-        let age = 0;
         function checkAge(age) {
             age = prompt("input your age in years");    
             while (!(age) || isNaN(age) || (age < 5) || (age > 120)) {
@@ -31,9 +30,7 @@
             return Math.round(age);
         }
         age = checkAge(age);
-
-        let gender = confirm('Are you a man?');
-        gender = (gender) ? 'man' : 'woman';    
+        gender = (confirm('Are you a man?')) ? 'man' : 'woman';    
         stat = (age < 18) ? 'minor' : 'adult';
 
         stat_1 = ((age >= 65) || ((age >= 60) && (gender === 'woman'))) ? 'yes' : 'no';
