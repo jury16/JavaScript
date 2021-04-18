@@ -36,14 +36,12 @@
         surName = checkString('surName');
         secondName = checkString('secondName');
         name = checkString('name');        
-        age = checkAge(age);
-        genderMan = 'man';
-        genderWoman = 'woman'
-        gender = (confirm('Are you a man?')) ? genderMan : genderWoman;    
+        age = checkAge();
+        gender = (confirm('Are you a man?'))
         stat = (age < 18) ? 'minor' : 'adult';
-        stat_1 = ((age >= 65) || ((age >= 60) && (gender === genderWoman))) ? 'yes' : 'no';  
+        stat_1 = ((age >= 65) || ((age >= 60) && (!(gender)))) ? 'yes' : 'no';  
         ageAfterFive = age + 5;
-        alert(`You are: ${surName} ${name} ${secondName} \nYour age in years is: ${age} \nYour age in days is: ${Math.round(age * 365)} \nAfter 5 years you will be: ${ageAfterFive} \nYour are: ${stat} \nYour gender is: ${gender} \nYou are retired: ${stat_1}`);
+        alert(`You are: ${surName} ${name} ${secondName} \nYour age in years is: ${age} \nYour age in days is: ${Math.round(age * 365)} \nAfter 5 years you will be: ${ageAfterFive} \nYour are: ${stat} \nYour gender is: ${(gender)?'mam':'woman'} \nYou are retired: ${stat_1}`);
 
     </script>
 </body>
