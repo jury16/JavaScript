@@ -11,13 +11,13 @@
 <body>
     <script>
         "use strict";
-        var FFref = null; 
+        var treeSum = null; 
         let array = [5, 7,
             [4, [2], 8, [1, 3], 2],
             [9, []],
             1, 8
         ]
-        function treeSum() {
+        function F() {
             var sum = 0;
             function FF(arr) {
                 arr.forEach(function (item, index) {
@@ -30,11 +30,11 @@
                 })
                 return sum;
             }
-            FFref = FF;
+            treeSum = FF;
             
         }
-        treeSum(array)
-        console.log(FFref(array));
+        F()
+        console.log(treeSum(array));
 
     </script>
 </body>
