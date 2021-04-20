@@ -11,24 +11,30 @@
 <body>
     <script>
         "use strict";
-        var sum = 0;
+        var FFref = null; 
         let array = [5, 7,
             [4, [2], 8, [1, 3], 2],
             [9, []],
             1, 8
         ]
-        function treeSum(arr) {
-            arr.forEach(function (item, index) {
-                if (Array.isArray(item)) {
-                    treeSum(item);
-                }
-                else if (Number(item)){
-                    sum += item;
-                }
-            })
-            return sum;
+        function treeSum() {
+            var sum = 0;
+            function FF(arr) {
+                arr.forEach(function (item, index) {
+                    if (Array.isArray(item)) {
+                        FF(item);
+                    }
+                    else if (Number(item)) {
+                        sum += item;
+                    }
+                })
+                return sum;
+            }
+            FFref = FF;
+            
         }
-        console.log(treeSum(array));
+        treeSum(array)
+        console.log(FFref(array));
 
     </script>
 </body>
