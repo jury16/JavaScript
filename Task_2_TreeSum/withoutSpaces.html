@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>withoutSpaces</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <script>
+        "use strict";
+        var str_ = prompt('Input your string');
+        function spaces(str) {
+            var strBefore, strAfter;
+            var i = 0;
+            while (i < str.length) {
+                if (str[i] == " ") {
+                    i += 1;
+                }
+                else break;
+            }            
+            strBefore = str.slice(i, str.length);
+            i = 0;            
+            while (i < strBefore.length) {                   
+                if (strBefore[strBefore.length - i - 1] == " ") {                    
+                    i += 1;                   
+                }
+                else break;                
+            }
+            strAfter = (!i) ? strBefore: strBefore.slice(0, (strBefore.length - i)) ;
+            return strAfter;
+            
+        }
+        alert(`$${spaces(str_)}$`);
+    </script>
+</body>
+
+</html>
