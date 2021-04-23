@@ -22,16 +22,18 @@
                 }
                 else break;
             }
+            if (i === str.length) { return alert(`строка состоит из пробелов`) }
             while (j < str.length) {
                 if (str[str.length - j - 1] == " ") {
                     j += 1;
                 }
                 else break;
             }
+            if (!i && !j) { return alert(`вначале и в конце нет пробелов: ${str}`)}
             strAfter = str.slice(i, (str.length - j));
-            return strAfter;
+            return alert(`$${strAfter}$`);
         }
-        alert(`$${spaces(str_)}$`);
+        spaces(str_);
     </script>
 </body>
 
