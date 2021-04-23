@@ -15,23 +15,21 @@
         function spaces(str) {
             var strBefore, strAfter;
             var i = 0;
+            var j = 0;
             while (i < str.length) {
                 if (str[i] == " ") {
                     i += 1;
                 }
                 else break;
-            }            
-            strBefore = str.slice(i, str.length);
-            i = 0;            
-            while (i < strBefore.length) {                   
-                if (strBefore[strBefore.length - i - 1] == " ") {                    
-                    i += 1;                   
-                }
-                else break;                
             }
-            strAfter = (!i) ? strBefore: strBefore.slice(0, (strBefore.length - i)) ;
+            while (j < str.length) {
+                if (str[str.length - j - 1] == " ") {
+                    j += 1;
+                }
+                else break;
+            }
+            strAfter = str.slice(i, (str.length - j));
             return strAfter;
-            
         }
         alert(`$${spaces(str_)}$`);
     </script>
