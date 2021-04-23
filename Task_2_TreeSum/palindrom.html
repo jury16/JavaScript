@@ -15,10 +15,12 @@
         function palindrom(str) {
             if (!str) { return alert('это не палиндром') };
             str = str.toLowerCase();
-            str = str.replace(/[ .,\/#!$%\^&\*;:{}=\-_`~()ьъ]/g, '');
+            str = str.replace(/[ .,\\/#!$%^&*;:{}=\-_`~()ьъ]/g, '');
             str = str.replace(/ё/g, 'е');
+            console.log(str);
             for (let i = 0; i < str.length; i++) {
                 if (str[i] != str[str.length - 1 - i]) {
+                    
                     return alert('это не палиндром');
                 }
             }
