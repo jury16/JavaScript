@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vowels_arr</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <script>
+        "use strict";
+        
+        let str_ = prompt('Введите Вашу строку')
+        while (!(str_) || !isNaN(str_)) {
+           str_ = prompt('Строка не должна быть пустой и должна состоять миниммум из одной буквы');
+        }
+        function checkVowelsForEach(str) {
+            str = str.replace(/ /g, '');
+            var arr = str.split('');
+            var vowels = { 'а': 0, 'е': 0, 'ё': 0, 'и': 0, 'о': 0, 'у': 0, 'э': 0, 'ы': 0, 'ю': 0, 'я': 0, };
+            var sum = 0;
+            arr.forEach(function (item, index) {
+                if (item in vowels) {
+                    sum += 1;                   
+                }
+            });            
+            return sum;
+        }
+        function checkVowelsReduce(str) {
+            str = str.replace(/ /g, '');
+            var arr = str.split('');
+            var vowels = { 'а': 0, 'е': 0, 'ё': 0, 'и': 0, 'о': 0, 'у': 0, 'э': 0, 'ы': 0, 'ю': 0, 'я': 0, };
+            function reduces(sum, item, index) {
+                if (item in vowels) {
+                    sum += 1;
+                }
+                return sum;
+            }
+            return arr.reduce(reduces, 0);
+        }
+
+        function checkVowelsFilter(str) {
+            str = str.replace(/ /g, '');
+            var arr = str.split('');
+            var vowels = { 'а': 0, 'е': 0, 'ё': 0, 'и': 0, 'о': 0, 'у': 0, 'э': 0, 'ы': 0, 'ю': 0, 'я': 0, };
+            function filtres(item, index) {
+                return item in vowels;
+            }
+            return arr.filter(filtres, 0).length;
+        }
+
+        console.log(`forEach: ${checkVowelsForEach(str_)}`);
+        console.log(`filter: ${checkVowelsFilter(str_)}`);
+        console.log(`reduce: ${checkVowelsReduce(str_)}`);
+
+    </script>
+</body>
+
+</html>
