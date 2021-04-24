@@ -16,24 +16,34 @@
             var strBefore, strAfter;
             var i = 0;
             var j = 0;
+            if (!str) {
+                console.log(`строка пустая`)
+                return str;   
+            }
             while (i < str.length) {
                 if (str[i] == " ") {
                     i += 1;
                 }
                 else break;
             }
-            if (i === str.length) { return alert(`строка состоит из пробелов`) }
+            if (i === str.length) {
+                console.log(`строка состоит из пробелов`);
+                return str;                
+            }
             while (j < str.length) {
                 if (str[str.length - j - 1] == " ") {
                     j += 1;
                 }
                 else break;
             }
-            if (!i && !j) { return alert(`вначале и в конце нет пробелов: ${str}`)}
+            if (!i && !j) {
+                console.log(`вначале и в конце нет пробелов`)
+                return str;
+            }
             strAfter = str.slice(i, (str.length - j));
-            return alert(`$${strAfter}$`);
+            return strAfter
         }
-        spaces(str_);
+        alert(`$${spaces(str_)}$`);
     </script>
 </body>
 
