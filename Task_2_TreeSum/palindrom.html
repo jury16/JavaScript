@@ -14,18 +14,18 @@
         var str_ = prompt('Input your string');
         function palindrom(str) {            
             str = str.replace(/[ .,\\/#!$%^&*;:{}=\-_`~()ьъ]/g, '');
-            if (!str) { return "это не палиндром" };
+            if (!str) { return true }
             str = str.toLowerCase();           
             str = str.replace(/ё/g, 'е');
             console.log(str);
             for (let i = 0; i < Math.floor(str.length / 2); i++) {
                 if (str[i] != str[str.length - 1 - i]) {
-                    return "это не палиндром"
+                    return false;
                 }
             }
-            return "это палиндром";
+            return true;
         }
-        alert(palindrom(str_));
+        str_ = palindrom(str_) ? alert("это палиндром") : alert("это не палиндром");
 
     </script>
 </body>
