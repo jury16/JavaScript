@@ -12,21 +12,25 @@
     <script>
         "use strict";
         var str_ = prompt('Input your string');
-        function palindrom(str) {            
+        function palindrom(str) {
+            str = str.toLowerCase();
             str = str.replace(/[ .,\\/#!$%^&*;:{}=\-_`~()ьъ]/g, '');
             if (!str) { return true }
-            str = str.toLowerCase();           
+            
             str = str.replace(/ё/g, 'е');
+            console.log(str);
             for (let i = 0; i < Math.floor(str.length / 2); i++) {
                 if (str[i] != str[str.length - 1 - i]) {
-                    return true;
+                    console.log(str);
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
         str_ = palindrom(str_) ? alert("это палиндром") : alert("это не палиндром");
 
     </script>
 </body>
+
 
 </html>
