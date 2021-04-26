@@ -19,10 +19,10 @@
             str = str.replace(/ё/g, 'е');
             for (let i = 0; i < Math.floor(str.length / 2); i++) {
                 if (str[i] != str[str.length - 1 - i]) {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
         str_ = palindrom(str_) ? alert("это палиндром") : alert("это не палиндром");
 
