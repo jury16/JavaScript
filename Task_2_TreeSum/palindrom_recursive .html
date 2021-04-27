@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>palindrom</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <script>
+        "use strict";
+        var str_ = prompt('Input your string');
+        function palindrom(str) {
+            str = str.toLowerCase();
+            str = str.replace(/[ .,\\/#!$%^&*;:{}=\-_`~()ьъ]/g, '');
+            str = str.replace(/ё/g, 'е');
+            if (str.length <= 1) {
+                return true;
+            }
+            else if (str[0] === str[str.length - 1]) {
+                return palindrom(str.slice(1, str.length - 1))
+            }
+            else return false;           
+        }
+        str_ = palindrom(str_) ? alert("это палиндром") : alert("это не палиндром");
+
+    </script>
+</body>
+
+</html>
