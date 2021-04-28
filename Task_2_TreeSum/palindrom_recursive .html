@@ -16,13 +16,16 @@
             str = str.toLowerCase();
             str = str.replace(/[ .,\\/#!$%^&*;:{}=\-_`~()ьъ]/g, '');
             str = str.replace(/ё/g, 'е');
-            if (str.length <= 1) {
-                return true;
+            function pali(strPali) {
+                if (strPali.length <= 1) {
+                    return true;
+                }
+                else if (strPali[0] === strPali[strPali.length - 1]) {
+                    return pali(strPali.slice(1, strPali.length - 1))
+                }
+                else return false;
             }
-            else if (str[0] === str[str.length - 1]) {
-                return palindrom(str.slice(1, str.length - 1))
-            }
-            else return false;           
+            return pali(str);
         }
         str_ = palindrom(str_) ? alert("это палиндром") : alert("это не палиндром");
 
