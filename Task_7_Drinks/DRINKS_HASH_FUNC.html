@@ -17,6 +17,7 @@
             color: white;
             padding: 1em 1.5em;
             text-decoration: none;
+            text-align: center;
             text-transform: uppercase;
             color: black;
         }
@@ -80,19 +81,22 @@
         }
         function getDrink() {
             var drinkName = prompt('Введите название напитка: ');
-            if (drinkStorage.getValue(drinkName) === undefined) {
+            var nameGetted = drinkStorage.getValue(drinkName);
+            if (nameGetted === undefined) {
                 alert(`напиток с названием ${drinkName} не найден`);
             }
             else {
-                alert(`напиток ${drinkName}\nалкогольный: ${drinkStorage.getValue(drinkName)['алкогольный']}\nрецепт: ${drinkStorage.getValue(drinkName)['рецепт']}`);
+                alert(`напиток ${drinkName}\nалкогольный: ${nameGetted['алкогольный']}\nрецепт: ${nameGetted['рецепт']}`);
             }
         }
         function deleteDrink() {
             var drinkName = prompt('Введите название напитка, который Вы хотите удалить: ');
-            alert(drinkStorage.deleteValue(drinkName)? `напиток ${drinkName} удален`: `напиток ${drinkName} не найден`)
+            var deletingDrink = drinkStorage.deleteValue(drinkName);
+            alert (deletingDrink ? `напиток ${drinkName} удален`: `напиток ${drinkName} не найден`)
         }
         function listDrink() {
-            alert(`Перечень напитков:\n${drinkStorage.getKeys()}`);
+            var listOfDrinks = drinkStorage.getKeys()
+            alert(`Перечень напитков:\n${listOfDrinks.join('\n')}`);
         }
         var drinkStorage = new HashStorageFunc();
     </script>
