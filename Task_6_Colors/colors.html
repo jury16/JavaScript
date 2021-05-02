@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>colors</title>
+    <style>
+    </style>
+</head>
+
+<body>
+
+    <script>
+        "use strict";
+
+        function randomDiap(n,m) {
+                return Math.floor(Math.random()*(m-n+1))+n;
+        }
+
+        function mood(colorsCount) {
+            var colors = { 'красный': 0, 'оранжевый': 0, 'жёлтый': 0, 'зелёный': 0, 'голубой': 0, 'синий': 0, 'фиолетовый': 0, };  
+            var arrayColors = Object.keys(colors);
+            console.log('цветов: ' + colorsCount);
+            while (colorsCount > 0) {
+                var n = randomDiap(0, 6);         
+                if (!colors[arrayColors[n]]) {
+                    console.log(arrayColors[n]);
+                    colors[arrayColors[n]] += 1;
+                    colorsCount -= 1;
+                }                
+            }
+        }
+
+        mood(3);
+
+    </script>
+
+</body>
+
+</html>
