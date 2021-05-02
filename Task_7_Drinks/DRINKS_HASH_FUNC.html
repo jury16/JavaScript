@@ -62,11 +62,7 @@
                 return false;
             }
             self.getKeys = () => {
-                var keys = [];
-                for (var key in list) {
-                    keys.push(key);
-                }
-                return keys;
+                return Object.keys(list);
             }
         }
         function setDrink() {
