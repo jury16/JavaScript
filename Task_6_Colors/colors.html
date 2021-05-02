@@ -19,13 +19,12 @@
 
         function mood(colorsCount) {
             var colors = { 'красный': 0, 'оранжевый': 0, 'жёлтый': 0, 'зелёный': 0, 'голубой': 0, 'синий': 0, 'фиолетовый': 0, };  
-            var arrayColors = Object.keys(colors);
             console.log('цветов: ' + colorsCount);
             while (colorsCount > 0) {
                 var n = randomDiap(0, 6);         
-                if (!colors[arrayColors[n]]) {
-                    console.log(arrayColors[n]);
-                    colors[arrayColors[n]] += 1;
+                if (!colors[Object.keys(colors)[n]]) {
+                    console.log(Object.keys(colors)[n]);
+                    colors[Object.keys(colors)[n]] += 1;
                     colorsCount -= 1;
                 }                
             }
