@@ -67,36 +67,46 @@
             }
         }
         function setDrink() {
-            var drinkName = prompt('Введите название напитка: ');
+            var drinkName = checkName(prompt('Введите название напитка: '));            
             var alco = confirm('напиток алкогольный?') ? "да" : "нет";
-            var ingr = prompt('Введите ингридиент напитка (ввести 0 для окончания ввода');
-            var recipe = {};
-            var ingridients = [];            
-            while (ingr != '0') {
-                ingridients.push(ingr);
-                ingr = prompt('Введите ингридиент напитка (ввести 0 для окончания ввода');
+            var ingridients = [];
+            var recipe = {};    
+            var ingr = prompt('Введите ингридиент напитка: ');
+            while (!ingr) {
+                ingr = prompt('В напитке должен быть минимум один ингридиент. Введите ингридиент напитка: ');                     
+            }     
+            ingridients.push(ingr);
+            while (ingr) {                
+                ingr = prompt('Введите следующий ингридиент напитка\nили \'CANCEL\' либо \'ENTER\' для окончания ввода): ');
+                if (ingr) { ingridients.push(ingr) };
             }
-            recipe = { 'алкогольный': alco, ingridients };
+            recipe = { 'алкогольный': alco, 'рецепт' : ingridients };
             drinkStorage.addValue(drinkName, recipe);
         }
         function getDrink() {
-            var drinkName = prompt('Введите название напитка: ');
+            var drinkName = checkName(prompt('Введите название напитка: '));
             var nameGetted = drinkStorage.getValue(drinkName);
             if (nameGetted === undefined) {
                 alert(`напиток с названием ${drinkName} не найден`);
             }
             else {
-                alert(`напиток ${drinkName}\nалкогольный: ${nameGetted['алкогольный']}\nрецепт: ${nameGetted['рецепт']}`);
+                alert(`напиток ${drinkName}\nалкогольный: ${nameGetted['алкогольный']}\nрецепт: ${nameGetted['рецепт'].join(', ')}`);
             }
         }
         function deleteDrink() {
-            var drinkName = prompt('Введите название напитка, который Вы хотите удалить: ');
+            var drinkName = checkName(prompt('Введите название напитка, который Вы хотите удалить: '));            
             var deletingDrink = drinkStorage.deleteValue(drinkName);
             alert (deletingDrink ? `напиток ${drinkName} удален`: `напиток ${drinkName} не найден`)
         }
         function listDrink() {
             var listOfDrinks = drinkStorage.getKeys()
             alert(`Перечень напитков:\n${listOfDrinks.join('\n')}`);
+        }
+        var checkName = (name) => {
+            while (!(name)) {
+                name = prompt(`Название напитка не может быть пустым. Введите название напитка: `);
+            }
+            return name;
         }
         var drinkStorage = new HashStorageFunc();
     </script>
