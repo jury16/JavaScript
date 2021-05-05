@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>decorator</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <script>
+
+        function buildWrapper(str) {
+            return function (str2, style = '') {  
+                var change = [['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ["'", '&prime;'],  ['"', '&Prime;']];
+                function replace(message) {
+                    for (var i = 0; i < change.length; i++) {
+                        message = message.replaceAll(change[i][0], change[i][1]);
+                    }
+                    return message;
+                }
+                str2 = replace(str2);
+                var stl = [];
+                for (var item in style) {
+                    style[item] = replace(style[item]);
+                    stl.push(`${item}='${style[item]}'`);
+                }
+                stl = stl.join(' ');
+                return `<${str} ${stl}>${str2}</${str}>`;
+            }
+        }        
+        var wrapP = buildWrapper("P");   // строим функцию для оборачивания текста в тег P
+        console.log(wrapP("Однажды в студёную зимнюю пору"));
+        // в консоль выводится строка "<P>Однажды в студёную зимнюю пору</P>"
+        console.log(wrapP("Однажды в студёную зимнюю пору", { lang: "ru" }));
+        /* в консоль выводится строка "<P lang='ru'>Однажды в студёную зимнюю пору</P>"
+        Функция должна учитывать, что некоторые символы надо заменять на HTML - мнемоники(а именно - символы < > ' " &):*/
+        console.log(wrapP("Однажды в <студёную> зимнюю пору"));
+        // в консоль выводится строка "<P>Однажды в &lt;студёную&gt; зимнюю пору</P>"
+        var wrapH1 = buildWrapper("H1"); // строим функцию для оборачивания текста в тег H1
+        console.log(wrapH1("СТИХИ", { align: "center", title: "M&M's" }));
+        // в консоль выводится строка "<H1 align='center' title='M&amp;M&apos;s'>СТИХИ</H1>"
+    </script>
+</body>
+
+</html>
