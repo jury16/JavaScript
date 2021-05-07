@@ -12,8 +12,7 @@
     <script>
 
         function buildWrapper(str) {
-            return function (str2, styles = {}) {  
-                var style = copy(styles);
+            return function (str2, style = {}) {  
                 var change = [['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ["'", '&apos;'], ['"', '&quot;']];
                 function replace(message) {
                     for (var i = 0; i < change.length; i++) {
@@ -21,18 +20,12 @@
                     }
                     return message;
                 }
-                function copy(obj) {
-                    var copyObj = {};
-                    for (var key in obj) {
-                        copyObj[key] = obj[key];
-                    }
-                    return copyObj;
-                }
                 str2 = replace(str2);
                 var stl = [];
+                var chanegMnemo;
                 for (var item in style) {
-                    style[item] = replace(style[item]);
-                    stl.push(`${item}='${style[item]}'`);
+                    chanegMnemo = replace(style[item]);
+                    stl.push(`${item}='${chanegMnemo}'`);
                 }
                 stl = stl.join(' ');
                 return `<${str} ${stl}>${str2}</${str}>`;
