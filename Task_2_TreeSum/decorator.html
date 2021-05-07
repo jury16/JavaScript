@@ -13,7 +13,7 @@
 
         function buildWrapper(str) {
             return function (str2, styles = {}) {  
-                var style = deepCopy(styles);
+                var style = copy(styles);
                 var change = [['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ["'", '&prime;'],  ['"', '&Prime;']];
                 function replace(message) {
                     for (var i = 0; i < change.length; i++) {
@@ -21,7 +21,7 @@
                     }
                     return message;
                 }
-                function deepCopy(obj) {
+                function copy(obj) {
                     var copyObj = {};
                     for (var key in obj) {
                         copyObj[key] = obj[key];
