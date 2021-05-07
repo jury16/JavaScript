@@ -12,13 +12,23 @@
     <script>
 
         function buildWrapper(str) {
-            return function (str2, style = '') {  
+            return function (str2, styles = {}) {  
+                var style = deepCopy(styles);
                 var change = [['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ["'", '&prime;'],  ['"', '&Prime;']];
                 function replace(message) {
                     for (var i = 0; i < change.length; i++) {
                         message = message.replaceAll(change[i][0], change[i][1]);
                     }
                     return message;
+                }
+                function deepCopy(obj) {
+                    var copyObj = {};
+                    for (var key in obj) {
+                        {
+                            copyObj[key] = obj[key];
+                        }
+                    }
+                    return copyObj;
                 }
                 str2 = replace(str2);
                 var stl = [];
