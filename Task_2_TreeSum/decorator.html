@@ -14,7 +14,7 @@
         function buildWrapper(str) {
             return function (str2, styles = {}) {  
                 var style = copy(styles);
-                var change = [['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ["'", '&prime;'],  ['"', '&Prime;']];
+                var change = [['&', '&amp;'], ['<', '&lt;'], ['>', '&gt;'], ["'", '&apos;'], ['"', '&quot;']];
                 function replace(message) {
                     for (var i = 0; i < change.length; i++) {
                         message = message.replaceAll(change[i][0], change[i][1]);
