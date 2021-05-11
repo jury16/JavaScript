@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>deepComp_trying</title>
+    <title>deepComp</title>
     <style>
     </style>
 </head>
@@ -27,34 +27,35 @@
 
         function deepComp(a, b) {
 
-            if ((a === b))  return true;
+            if ((a === b)) return true;
             if (typeof a != typeof b) return false;
-            if ((a == null || b == null) && (typeof a != b )) return false;
-            if (typeof a == 'number' && isNaN(a) && isNaN(b)) return true;
+            if ((a == null || b == null) && (typeof a != b)) { return false };
+            if (typeof a == 'number' && isNaN(a) && isNaN(b)) { return true };
 
-            if ((a instanceof Array) != (b instanceof Array)) return false;
+            if ((a instanceof Array) != (b instanceof Array)) { return false };
             if (typeof a == 'object' && typeof b == 'object') {
                 var aKeys = Object.keys(a);
                 var bKeys = Object.keys(b);
-                if (aKeys.length != bKeys.length) return false;
+                if (aKeys.length != bKeys.length) { return false };
                 if (!aKeys.every(function (key) {
-                        return b.hasOwnProperty(key)
-                    })) return false;
-
-                return aKeys.every(function (key) {
-                    return deepComp(a[key], b[key])
-                });
+                    return b.hasOwnProperty(key)
+                })) return false;
+                else {
+                    return aKeys.every(function (key) {
+                        return deepComp(a[key], b[key])
+                    });
+                }
             }
             return false;
         }
         console.log(`deepComp(H1, H2) будет true: ${deepComp(H1, H2)}`);
-        console.log(`deepComp(H1, H3) будет false: ${deepComp(H1, H3)}`); 
+        console.log(`deepComp(H1, H3) будет false: ${deepComp(H1, H3)}`);
         console.log(`deepComp(H1, H4)  будет false: ${deepComp(H1, H4)}`);
         console.log(`deepComp(H1, H5) будет false: ${deepComp(H1, H5)}`);
         console.log(`deepComp(H6, H7) будет true: ${deepComp(H6, H7)}`);
-        console.log(`deepComp(H8, H9) будет false: ${deepComp(H8, H9)}`); 
-        console.log(`deepComp(H8, H10) будет false: ${deepComp(H8, H10)}`); 
-        console.log(`deepComp(null, H10) будет false: ${deepComp(null, H10)}`); 
+        console.log(`deepComp(H8, H9) будет false: ${deepComp(H8, H9)}`);
+        console.log(`deepComp(H8, H10) будет false: ${deepComp(H8, H10)}`);
+        console.log(`deepComp(null, H10) будет false: ${deepComp(null, H10)}`);
         console.log(`deepComp(H10, null) будет false: ${deepComp(H10, null)}`);
         console.log(`deepComp(null, null) будет true: ${deepComp(null, null)}`);
         console.log(`deepComp(null, undefined) будет false:: ${deepComp(null, undefined)}`);
