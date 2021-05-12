@@ -29,11 +29,17 @@
 
             if ((a === b)) return true;
             if (typeof a != typeof b) return false;
-            if ((a == null || b == null) && (typeof a != b)) { return false };
+            if ((a === null || b === null)) { return false };
             if (typeof a == 'number' && isNaN(a) && isNaN(b)) { return true };
 
             if ((a instanceof Array) != (b instanceof Array)) { return false };
-            if (typeof a == 'object' && typeof b == 'object') {
+            if (a instanceof Array) {
+                if (JSON.stringify(a) === JSON.stringify(b)) {
+                    return true;
+                }
+                return false;                
+            }
+           if (typeof a == 'object' && typeof b == 'object') {
                 var aKeys = Object.keys(a);
                 var bKeys = Object.keys(b);
                 if (aKeys.length != bKeys.length) { return false };
@@ -48,28 +54,38 @@
             }
             return false;
         }
-        console.log(`deepComp(H1, H2) будет true: ${deepComp(H1, H2)}`);
-        console.log(`deepComp(H1, H3) будет false: ${deepComp(H1, H3)}`);
-        console.log(`deepComp(H1, H4)  будет false: ${deepComp(H1, H4)}`);
-        console.log(`deepComp(H1, H5) будет false: ${deepComp(H1, H5)}`);
-        console.log(`deepComp(H6, H7) будет true: ${deepComp(H6, H7)}`);
-        console.log(`deepComp(H8, H9) будет false: ${deepComp(H8, H9)}`);
-        console.log(`deepComp(H8, H10) будет false: ${deepComp(H8, H10)}`);
-        console.log(`deepComp(null, H10) будет false: ${deepComp(null, H10)}`);
-        console.log(`deepComp(H10, null) будет false: ${deepComp(H10, null)}`);
-        console.log(`deepComp(null, null) будет true: ${deepComp(null, null)}`);
-        console.log(`deepComp(null, undefined) будет false:: ${deepComp(null, undefined)}`);
-        console.log(`deepComp(5, "5") будет false: ${deepComp(5, "5")}`);
-        console.log(`deepComp(5, H1) будет false: ${deepComp(5, H1)}`);
-        console.log(`deepComp(A1, H1) будет false: ${deepComp(A1, H1)}`);
-        console.log(`deepComp(A2, A3) будет false : ${deepComp(A2, A3)}`);
-        console.log(`deepComp({ a: 5, b: undefined }, { a: 5, c: undefined }) будет false: ${deepComp({ a: 5, b: undefined }, { a: 5, c: undefined })}`);
-        console.log(`deepComp([5, 7], { 0: 5, 1: 7 }) будет false: ${deepComp([5, 7], { 0: 5, 1: 7 })} `);
-        console.log(`deepComp([5, 7], { 0: 5, 1: 7, length: 2 }) будет false: ${deepComp([5, 7], { 0: 5, 1: 7, length: 2 })}`);
-        console.log(`deepComp("aaa", "bbb") будет false: ${deepComp("aaa", "bbb")}`);
-        console.log(`deepComp(Number.NaN, Number.NaN) будет true: ${deepComp(Number.NaN, Number.NaN)}`);
-        console.log(`deepComp([1, 2, 3], [1, 2, 3]) будет true: ${deepComp([1, 2, 3], [1, 2, 3])}`);
-
+        var pass = 0;
+        var notPass = 0;
+        function test(a, b, result) {
+            if (deepComp(a, b) == result) {
+                return ++pass;
+            }
+            return ++notPass;
+        }
+        test(H1, H2, true);
+        test(H1, H3, false);
+        test(H1, H4, false);
+        test(H1, H5, false);
+        test(H6, H7, true);
+        test(H8, H9, false);
+        test(H8, H10, false);
+        test(null, H10, false);
+        test(H10, null, false);
+        test(null, null, true);
+        test(null, undefined, false);
+        test(5, "5", false);
+        test(5, H1, false);
+        test(A1, H1, false);
+        test(A2, A3, false);
+        test({ a: 5, b: undefined }, { a: 5, c: undefined }, false);
+        test([5, 7], { 0: 5, 1: 7 }, false);
+        test([5, 7], { 0: 5, 1: 7, length: 2 }, false);
+        test("aaa", "bbb", false);
+        test(Number.NaN, Number.NaN, true);
+        test([1, 2, 3], [1, 2, 3], true);
+        console.log(`passed tests: ${pass}`);
+        console.log(`not passed tests: ${notPass}`);
+       
 
     </script>
 </body>
