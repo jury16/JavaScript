@@ -37,9 +37,9 @@
                     return false;
                 }
                 else {
+                    var foo = null;
                     for (var item = 0; item < a.length; item++) {
-                        var foo = deepComp(a[item], b[item]);
-                        if (foo == false) { return false };
+                        if (!Boolean(deepComp(a[item], b[item]))){return false};
                     }
                     return true;
                 }
@@ -68,7 +68,7 @@
             }
             return ++notPass;
         }
-        test(2, 2, true)
+        
         test(H1, H2, true);
         test(H1, H3, false);
         test(H1, H4, false);
@@ -81,6 +81,7 @@
         test(null, null, true);
         test(null, undefined, false);
         test(5, "5", false);
+        test(2, 2, true)
         test(5, H1, false);
         test(A1, H1, false);
         test(A2, A3, false);
@@ -94,6 +95,8 @@
         test(['yes', null, Number.NaN], [undefined, null, Number.NaN], false);
         test([Number.NaN, 56, 3], [Number.NaN, 56, 3], true);
         test([{ a: 5 }], [{ a: 5 }], true);
+
+
         console.log(`passed tests: ${pass}`);
         console.log(`not passed tests: ${notPass}`);
     </script>
