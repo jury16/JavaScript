@@ -26,30 +26,7 @@
         var A3 = [5, 8, 7];
 
         function deepComp(a, b) {
-            if ((a === b)) { return true };
-            if (typeof a != typeof b) return false;
-            if ((a === null || b === null)) { return false };
-            if (typeof a == 'number' && isNaN(a) && isNaN(b)) { return true };
-
-            if ((a instanceof Array) != (b instanceof Array)) { return false };
-            if (a instanceof Array) {
-                if (a.length != b.length) {
-                    return false;
-                }
-                else {
-                    for (var i = 0; i < a.length; i++) {
-                        if (!(a[i] instanceof Array)) {
-                            if (!(typeof a[i] == 'number' && isNaN(a[i]) && isNaN(b[i])) && (a[i] != b[i])) {
-                                return false;
-                            }
-                        }
-                        else return deepComp(a[i], b[i]);
-                    }
-                    return true;
-                }
-
-            }
-            if (typeof a == 'object') {
+            function checkObj(a, b) {
                 var aKeys = Object.keys(a);
                 var bKeys = Object.keys(b);
                 if (aKeys.length != bKeys.length) { return false };
@@ -62,6 +39,36 @@
                     });
                 }
             }
+            if ((a === b)) { return true };
+            if (typeof a != typeof b) return false;
+            if ((a === null || b === null)) { return false };
+            if (typeof a == 'number' && isNaN(a) && isNaN(b)) { return true };
+
+            if ((a instanceof Array) != (b instanceof Array)) { return false };
+            if (a instanceof Array) {
+                if (a.length != b.length) {
+                    return false;
+                }
+                else {
+                    for (var i = 0; i < a.length; i++) {
+
+                        if (!(a[i] instanceof Array)) {
+                            if (typeof a[i] == 'object' && a[i] != null && a[i] != undefined) {
+                                return checkObj(a[i], b[i]);
+                            }
+                            else if (!(typeof a[i] == 'number' && isNaN(a[i]) && isNaN(b[i])) && (a[i] != b[i])) {
+                                return false;
+                            }
+                        }
+                        else return deepComp(a[i], b[i]);
+                    }
+                    return true;
+                }
+
+            }
+            if (typeof a == 'object') {
+                return checkObj(a, b);
+            }
             return false;
         }
         var pass = 0;
@@ -72,6 +79,7 @@
             }
             return ++notPass;
         }
+
         test(H1, H2, true);
         test(H1, H3, false);
         test(H1, H4, false);
@@ -95,9 +103,14 @@
         test([1, 2, 3], [1, 2, 3], true);
         test([undefined, null, NaN], [undefined, null, NaN], true);
         test(['yes', null, Number.NaN], [undefined, null, Number.NaN], false);
-        test([Number.NaN, 56, 3], [Number.NaN, 56, 3], true);
+        test([{ a: 5 }], [{ a: 5 }], true);
+        test([{ a: 5 }, 1], [{ a: 5 }], false);
+        test({ 'fff': 35 }, { 'fff': 35 }, true);
         console.log(`passed tests: ${pass}`);
         console.log(`not passed tests: ${notPass}`);
+
+
+
     </script>
 </body>
 
