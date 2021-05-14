@@ -37,9 +37,11 @@
                     return false;
                 }
                 else {
-                        a.forEach(function (item, index) {
-                        return deepComp(a[item], b[item]);
-                    }); 
+                    for (var item = 0; item < a.length; item++) {
+                        var foo = deepComp(a[item], b[item]);
+                        if (foo == false) { return false };
+                    }
+                    return true;
                 }
 
             }
@@ -66,6 +68,7 @@
             }
             return ++notPass;
         }
+        test(2, 2, true)
         test(H1, H2, true);
         test(H1, H3, false);
         test(H1, H4, false);
