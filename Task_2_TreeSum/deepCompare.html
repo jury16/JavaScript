@@ -36,8 +36,7 @@
                 if (a.length != b.length) {
                     return false;
                 }
-                else {
-                    var foo = null;
+                else {                    
                     for (var item = 0; item < a.length; item++) {
                         if (!Boolean(deepComp(a[item], b[item]))){return false};
                     }
