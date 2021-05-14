@@ -26,20 +26,30 @@
         var A3 = [5, 8, 7];
 
         function deepComp(a, b) {
-
-            if ((a === b)) return true;
+            if ((a === b)) { return true };
             if (typeof a != typeof b) return false;
             if ((a === null || b === null)) { return false };
             if (typeof a == 'number' && isNaN(a) && isNaN(b)) { return true };
 
             if ((a instanceof Array) != (b instanceof Array)) { return false };
             if (a instanceof Array) {
-                if (JSON.stringify(a) === JSON.stringify(b)) {
+                if (a.length != b.length) {
+                    return false;
+                }
+                else {
+                    for (var i = 0; i < a.length; i++) {
+                        if (!(a[i] instanceof Array)) {
+                            if (!(typeof a[i] == 'number' && isNaN(a[i]) && isNaN(b[i])) && (a[i] != b[i])) {
+                                return false;
+                            }
+                        }
+                        else return deepComp(a[i], b[i]);
+                    }
                     return true;
                 }
-                return false;                
+
             }
-           if (typeof a == 'object' && typeof b == 'object') {
+            if (typeof a == 'object') {
                 var aKeys = Object.keys(a);
                 var bKeys = Object.keys(b);
                 if (aKeys.length != bKeys.length) { return false };
@@ -83,10 +93,11 @@
         test("aaa", "bbb", false);
         test(Number.NaN, Number.NaN, true);
         test([1, 2, 3], [1, 2, 3], true);
+        test([undefined, null, NaN], [undefined, null, NaN], true);
+        test(['yes', null, Number.NaN], [undefined, null, Number.NaN], false);
+        test([Number.NaN, 56, 3], [Number.NaN, 56, 3], true);
         console.log(`passed tests: ${pass}`);
         console.log(`not passed tests: ${notPass}`);
-       
-
     </script>
 </body>
 
