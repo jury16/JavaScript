@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>example_trying</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <form method=post action='https://form.it-academy.by/TestForm.php' name='form_1'></form>
+    </div>
+    <div>
+        <form method=post action='https://form.it-academy.by/TestForm.php' name='form_2'></form>
+    </div>
+    <script>
+        "use script";
+        var formDef1 =
+            [
+                { label: 'Название сайта:', kind: 'longtext', name: 'sitename' },
+                { label: 'URL сайта:', kind: 'longtext', name: 'siteurl' },
+                { label: 'Посетителей в сутки:', kind: 'number', name: 'visitors' },
+                { label: 'E-mail для связи:', kind: 'shorttext', name: 'email' },
+                {
+                    label: 'Рубрика каталога:', kind: 'combo', name: 'division',
+                    variants: [{ text: 'здоровье', value: 1 }, { text: 'домашний уют', value: 2 }, { text: 'бытовая техника', value: 3 }]
+                },
+                {
+                    label: 'Размещение:', kind: 'radio', name: 'payment',
+                    variants: [{ text: 'бесплатное', value: 1 }, { text: 'платное', value: 2 }, { text: 'VIP', value: 3 }]
+                },
+                { label: 'Разрешить отзывы:', kind: 'check', name: 'votes' },
+                { label: 'Описание сайта:', kind: 'memo', name: 'description' },
+                { label: 'Опубликовать:', kind: 'submit' },
+            ];
+        var formDef2 =
+            [
+                { label: 'Фамилия:', kind: 'longtext', name: 'lastname' },
+                { label: 'Имя:', kind: 'longtext', name: 'firstname' },
+                { label: 'Отчество:', kind: 'longtext', name: 'secondname' },
+                { label: 'Возраст:', kind: 'number', name: 'age' },
+                { label: 'Зарегистрироваться:', kind: 'submit' },
+            ];
+        function buildForm(formDef, form) {
+            
+            formDef.forEach(item => {
+                var label = document.createElement('label');
+                if (item.label == 'Опубликовать:') {
+                    item.label = null;
+                    var value = 'Опубликовать:';
+                }
+                else if (item.label == 'Зарегистрироваться:') {
+                    item.label = null;
+                    var value = 'Зарегистрироваться:';
+                }
+                label.innerHTML = item.label;
+                form.appendChild(label);
+                label.style.display = 'inline-block';
+                label.style.height = '28px';
+                switch (item.kind) {
+                    case ('longtext'): return transform('text');
+                    case ('shorttext'): return transform('text');
+                    case ('number') : return transform('number');
+                    case ('check') : return transformCheck();
+                    case ('memo'): return transformMemo('width: 100%; height: 50px');
+                    case ('submit') : return transformSub();
+                    case ('radio') : return transformRadio();
+                    case ('combo') : return transformCombo();
+                }
+                
+                function transformCheck() {
+                    var tag = document.createElement('input');
+                    tag.type = 'checkbox';
+                    form.appendChild(tag);
+                    tag.style.marginLeft = '6%';
+                    var lineWrap = document.createElement('br');
+                    form.appendChild(lineWrap);
+                }
+                function transform(kind) {
+                    var tag = document.createElement('input');
+                    tag.type = kind;
+                    form.appendChild(tag);
+                    tag.style.cssFloat = 'right';
+                    tag.style.width = '71%';
+                    var lineWrap = document.createElement('br');
+                    form.appendChild(lineWrap);
+                }
+                function transformRadio() {
+                    item.variants.forEach(item => {
+                        var tag = document.createElement('input');
+                        tag.type = 'radio';
+                        tag.name = "payment";
+                        tag.style.marginLeft = '13%';
+                        tag.setAttribute('value', item.value);
+                        var newRadio = document.createElement('span');
+                        newRadio.textContent = item.text;
+                        form.appendChild(tag);
+                        form.appendChild(newRadio);
+                    });
+                    var lineWrap = document.createElement('br');
+                    form.appendChild(lineWrap);
+                }
+                function transformMemo(dimention) {
+                    var tag = document.createElement('textarea');
+                    tag.style.cssText = dimention;
+                    form.appendChild(tag);
+                    var lineWrap = document.createElement('br');
+                    form.appendChild(lineWrap);
+                };
+                function transformCombo() {
+                    var tag = document.createElement('select');
+                    form.appendChild(tag);
+                    tag.style.marginLeft = '7%';
+                    item.variants.forEach(item => {
+                        var tagOption = document.createElement('option');
+                        tagOption.setAttribute('value', item.value);
+                        tagOption.textContent = item.text;
+                        tag.appendChild(tagOption);
+                        
+                    });
+
+                    var lineWrap = document.createElement('br');
+                    form.appendChild(lineWrap);
+
+                }
+                function transformSub() {
+                    var tag = document.createElement('input');
+                    tag.type = 'submit';
+                    tag.value = value;
+                    form.appendChild(tag);
+                    var lineWrap = document.createElement('br');
+                    form.appendChild(lineWrap);
+                }
+                
+
+            });
+            var lineWrap = document.createElement('br');
+            form.appendChild(lineWrap);
+        }
+        var a = document.getElementsByTagName('div');
+        a[0].style.width = '600px'; 
+        a[1].style.width = '600px'; 
+        var form1 = document.forms['form_1'];
+        var form2 = document.forms['form_2'];
+        buildForm(formDef1, form1);
+        buildForm(formDef2, form2);
+        
+    </script>
+</body>
+
+</html>
