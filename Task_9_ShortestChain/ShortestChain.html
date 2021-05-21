@@ -15,9 +15,11 @@
         function chains(start, target, dict) {
             if (start == target) return (start + ',' + target);
             var wordlength = start.length;
+            var count = 0;
             var qeueResult = [start,];
             var qeue = [start,];
             while (qeue.length != 0) {
+                count++;
                 for (let i = 0; i < qeue.length; ++i) {
                     let word = qeue[0].split("");
                     qeue.shift();
@@ -26,13 +28,16 @@
                         for (let c = 'А'.charCodeAt(0); c <= 'Я'.charCodeAt(0); ++c) {
                             word[pos] = String.fromCharCode(c);
                             if (word.join("") == target) {
-                                return qeueResult + ',' + target;
+                                return [qeueResult + ',' + target, count];
+
                             }
-                            if (!dict.has(word.join("")))
-                                continue;
-                            dict.delete(word.join(""));
-                            qeue.push(word.join(""));
-                            qeueResult.push(word.join(""));
+                            if (dict.has(word.join(""))) {
+                                dict.delete(word.join(""));
+                                qeue.push(word.join(""));
+                                qeueResult.push(word.join(""));
+                            }
+                            else  continue;                             
+                            
                         }
                         word[pos] = origChar;
                     }
@@ -45,11 +50,14 @@
         var dict = new Set(d1);
         var start = "МУХА";
         var target = "СЛОН";
-        console.log("Shortest chain is: " + chains(start, target, dict));
+        result = chains(start, target, dict);
+        console.log("Shortest chain is: " + result[0]);
+        console.log("Shortest length is: " + result[1]);
         start = "ЛИСА";
         target = "ЛОСЬ";
-        console.log("Shortest chain is: " + chains(start, target, dict));
-
+        result = chains(start, target, dict);
+        console.log("Shortest chain is: " + result[0]);
+        console.log("Shortest length is: " + result[1]);
 
     </script>
 </body>
