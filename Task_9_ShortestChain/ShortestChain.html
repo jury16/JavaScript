@@ -13,38 +13,37 @@
     <script>
         "use script";
             function chains(start, target, dict) {
-                if(start == target)
-            return 0;
-            var count = 0, wordlength = start.length;
-                var qeueResult = [start,];
-                var qeue = [start, ];
-                //qeue.push(start);
-            while (qeue.length != 0){
-                    ++count;
-                var sizeQeue = qeue.length;
-                for (let i = 0; i < sizeQeue; ++i){
-                    let word = qeue[0].split("");
-                    qeue.shift();
+                if(start == target) return (start + ',' + target);
+                var count = 0, wordlength = start.length;
+                    var qeueResult = [start,];
+                    var qeue = [start, ];
+                    //qeue.push(start);
+                while (qeue.length != 0){
+                        ++count;
+                    var sizeQeue = qeue.length;
+                    for (let i = 0; i < sizeQeue; ++i){
+                        let word = qeue[0].split("");
+                        qeue.shift();
 
-                    for (let pos = 0; pos < wordlength; ++pos){
-                        var origChar = word[pos];
-                        for (let c = 'А'.charCodeAt(0); c <= 'Я'.charCodeAt(0); ++c){
-                            word[pos] = String.fromCharCode(c);
-                            if (word.join("") == target) {
-                                return qeueResult + ',' + target;
-                            }                                
-                            if (!dict.has(word.join("")))
-                                continue;
-                            dict.delete(word.join(""));                            
-                            qeue.push(word.join(""));
-                            qeueResult.push(word.join(""));
+                        for (let pos = 0; pos < wordlength; ++pos){
+                            var origChar = word[pos];
+                            for (let c = 'А'.charCodeAt(0); c <= 'Я'.charCodeAt(0); ++c){
+                                word[pos] = String.fromCharCode(c);
+                                if (word.join("") == target) {
+                                    return qeueResult + ',' + target;
+                                }                                
+                                if (!dict.has(word.join("")))
+                                    continue;
+                                dict.delete(word.join(""));                            
+                                qeue.push(word.join(""));
+                                qeueResult.push(word.join(""));
+                            }
+                            word[pos] = origChar;                       
                         }
-                        word[pos] = origChar;                       
                     }
                 }
-            }
 
-            return 0;
+                return 0;
             }
         d1 = ["ЛУЖА", "МУЗА", "ЛИРА", "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "СЛОТ", "ПАРА", ];
         var dict = new Set(d1);
