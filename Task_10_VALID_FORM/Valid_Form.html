@@ -8,6 +8,7 @@
         div {
             margin: 5px 2px;
         }
+
         label {
             display: inline-block;
             height: 28px;
@@ -26,7 +27,7 @@
 </head>
 
 <body>
-    <form name="form" action="http://fe.it-academy.by/TestForm.php">
+    <form name="Form" action="http://fe.it-academy.by/TestForm.php">
         <fieldset>
             <div>
                 <div>
@@ -83,10 +84,10 @@
         </fieldset>
     </form>
 
-    <script>
+    <script defer>
         "use strict";
         window.onload = function () {
-            var formTag = document.forms["form"];
+            var formTag = document.forms.Form;
             var devField = formTag.elements["developers"];
             var siteNameField = formTag.elements["siteName"];
             var urlField = formTag.elements["urlSite"];
@@ -126,7 +127,7 @@
                 }
             });
             checkField.onchange = function () {
-                if (checkField.checked === false) {
+                if (!checkField.checked) {
                     checkEmptyField(checkField);
                     return false;
                 } else {
@@ -150,7 +151,7 @@
 
 
                     function checkFieldEmpty(fieldName) {
-                        if (fieldName.value == '') {
+                        if (!fieldName.value) {
                             checkEmptyField(fieldName);
                             emptyFields.push(fieldName);
                         } else {
@@ -163,7 +164,7 @@
                         fieldName.focus();
                     }
 
-                    if (radioField.value === "") {
+                    if (!radioField.value) {
                         document.getElementById("payment").innerHTML = " Это поле не должно быть пустым!";
                         emptyFields.push(radioField[0]);
 
@@ -173,11 +174,11 @@
                     }
 
 
-                    if (checkField.checked === false) {
+                    if (!checkField.checked) {
                         checkEmptyField(checkField);
                         emptyFields.push(checkField);
 
-                    } else if (checkField.checked !== false) {
+                    } else  {
                         document.getElementById(checkField.name).innerHTML = "";
                     }
 
