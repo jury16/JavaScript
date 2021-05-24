@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>valid_form</title>
+    <style>
+        div {
+            margin: 5px 2px;
+        }
+
+        label {
+            display: inline-block;
+            height: 28px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 50px;
+        }
+
+        span {
+            color: red;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <form name="form" action="http://fe.it-academy.by/TestForm.php">
+        <fieldset>
+            <div>
+                <div>
+                    <label>Разработчики:</label>
+                    <input type="text" name="developers" value=""><span id="developers"></span>
+                </div>
+                <div>
+                    <label>Название сайта:</label>
+                    <input type="text" name="siteName" value=""><span id="siteName"></span>
+                </div>
+                <div>
+                    <label>URL сайта:</label>
+                    <input type="text" name="urlSite" value=""><span id="urlSite"></span>
+                </div>
+                <div>
+                    <label>Дата запуска сайта:</label>
+                    <input type="date" name="dateSite" value=""><span id="dateSite"></span>
+                </div>
+                <div>
+                    <label>Посетителей в сутки:</label>
+                    <input type="number" name="visitors" value=""><span id="visitors"></span>
+                </div>
+                <div>
+                    <label>E-mail для связи:</label>
+                    <input type="text" name="e_mail" value=""><span id="e_mail"></span>
+                </div>
+                <div>
+                    <label>Рубрика каталога:</label>
+                    <select name="division">
+                        <option value="1">бытовая техника</option>
+                        <option value="2">домашний уют</option>
+                        <option value="3">здоровье</option>
+                    </select>
+                </div>
+                <div>
+                    <label> Размещение:</label>
+                    <input type="radio" name="payment" value="1"><label>бесплатное</label>
+                    <input type="radio" name="payment" value="2"><label>платное</label>
+                    <input type="radio" name="payment" value="3"><label>VIP</label>
+                    <span id="payment"></span>
+                </div>
+                <div>
+                    <label> Разрешить отзывы:</label>
+                    <input type="checkbox" name="reviews"><span id="reviews"></span>
+                </div>
+                <div>
+                    <label> Описание сайта:</label><br>
+                    <textarea name="description"></textarea><span id="description"></span>
+                </div>
+                <div>
+                    <button type="submit" name="button" value="Опубликовать">Опубликовать</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <script defer>
+        "use strict";
+        window.onload = function () {
+            var formTag = document.forms["form"];
+            var devField = formTag.elements["developers"];
+            var siteNameField = formTag.elements["siteName"];
+            var urlField = formTag.elements["urlSite"];
+            var dateField = formTag.elements["dateSite"];
+            var visitorsField = formTag.elements["visitors"];
+            var emailField = formTag.elements["e_mail"];
+            var radioField = formTag.elements["payment"];
+            var checkField = formTag.elements["reviews"];
+            var descriptionField = formTag.elements["description"];
+            var fields = [devField, siteNameField, urlField, dateField, visitorsField, emailField, descriptionField,];
+
+            function onblurEmpty(fieldName) {
+                fieldName.onblur = function () {
+                    if (!fieldName.value) {
+                        checkEmptyField(fieldName);
+                        return false;
+                    } else {
+                        var clean = document.getElementById(fieldName.name);
+                        clean.innerHTML = "";
+                    }
+                    return true;
+                }
+            }
+            function checkEmptyField(fieldName) {
+                document.getElementById(fieldName.name).innerHTML = " Это поле не должно быть пустым!";
+            }
+            radioField.forEach(function (value, index, array) {
+                array[index].onchange = function () {
+                    if (array[index].value === "") {
+                        onblurEmpty(radioField);
+                        return false;
+                    }
+                    else {
+                        document.getElementById("payment").innerHTML = "";
+
+                    }
+                }
+            });
+            checkField.onchange = function () {
+                if (checkField.checked === false) {
+                    checkEmptyField(checkField);
+                    return false;
+                } else {
+                    document.getElementById(checkField.name).innerHTML = "";
+                }
+                return true;
+            }
+            fields.forEach(function (val, ind, arr) {
+                onblurEmpty(val);
+            });
+
+
+            function validation() {
+
+                try {
+                    var emptyFields = [];
+                    fields.forEach(function (val, ind, arr) {
+                        checkFieldEmpty(val);
+                    });
+
+
+
+                    function checkFieldEmpty(fieldName) {
+                        if (fieldName.value == '') {
+                            checkEmptyField(fieldName);
+                            emptyFields.push(fieldName);
+                        } else {
+                            document.getElementById(fieldName.name).innerHTML = "";
+                        }
+                    }
+                    function checkEmptyField(fieldName) {
+                        document.getElementById(fieldName.name).innerHTML = " Это поле не должно быть пустым!";
+                        console.log(fieldName);
+                        fieldName.focus();
+                    }
+
+                    if (radioField.value === "") {
+                        document.getElementById("payment").innerHTML = " Это поле не должно быть пустым!";
+                        emptyFields.push(radioField[0]);
+
+
+                    } else {
+                        document.getElementById("payment").innerHTML = "";
+                    }
+
+
+                    if (checkField.checked === false) {
+                        checkEmptyField(checkField);
+                        emptyFields.push(checkField);
+
+                    } else if (checkField.checked !== false) {
+                        document.getElementById(checkField.name).innerHTML = "";
+                    }
+
+
+                    if (emptyFields.length != 0) {
+                        emptyFields[0].focus();
+                        //debugger;
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch (Ex) {
+                    return false;
+                }
+
+            }
+            formTag.onsubmit = validation;
+        }
+
+    </script>
+</body>
+
+</html>
