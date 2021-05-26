@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Drag_N_Drop</title>
+    <style>
+        body{
+            margin: 0px;
+            padding: 0px;
+            width: 100vw;
+            height: 100vh;
+        }
+        img{
+            width: 120px;
+            height:120px;
+            margin: 10px 20px;
+        }
+        img:hover{
+            
+        }
+    </style>
+</head>
+
+<body >
+    <div id="page">
+            <img src="apple.jpg"  id="img_1">
+            <img src="cherry.jpg"  id="img_2">
+            <img src="orange.jpg" id="img_3">       
+            <img src="peach.jpg"  id="img_4">
+            <img src="plum.jpg"  id="img_5">
+            <img src="strawberry.jpg" id="img_6">        
+    </div>
+    <script >
+        "use strict";
+        
+        var dragX = 0;
+        var dragY = 0;
+        var dragImg = null;
+        var page = document.getElementById("page");
+
+        
+        page.addEventListener("mousedown", take, false);
+        page.addEventListener("mouseup", drop, false);
+        
+        // Make positions 'fixed' for all images
+        var imgs = page.getElementsByTagName('img');
+        var arrPositions = {};
+        for (var i = 0; i < imgs.length; i++) {
+            arrPositions[i] = [imgs[i].offsetLeft, imgs[i].offsetTop];
+        }
+        for (var i = 0; i < imgs.length; i++) {
+            var a, b;
+            imgs[i].style.position = 'fixed';
+            [a, b] = arrPositions[i];
+            imgs[i].style.left = a + 'px';
+            imgs[i].style.top = b + 'px';
+        }
+ 
+        function take(EO) {            
+            EO = EO || document.event;
+            dragImg = EO.target;
+
+            dragImg.style.position = 'absolute';
+
+            for (var i = 0; i < imgs.length; i++) {
+                imgs[i].style.zIndex = 0;
+            }
+            dragImg.style.zIndex = 1;
+
+            //turn off the the pre-installed drag-n-drop function of the browser
+            dragImg.ondragstart = function () {
+                return false;
+            };
+
+
+            var imageX = dragImg.offsetLeft;
+            var imageY = dragImg.offsetTop;     
+            
+            var mouseX = EO.pageX;
+            var mouseY = EO.pageY;
+
+            dragX = mouseX - imageX;
+            dragY = mouseY - imageY;
+            document.onmousemove = dragMove;
+            document.onmouseup = dragStop;
+        }
+
+
+        function dragStop() {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        }
+
+        function dragMove(EO) {
+            EO = EO || document.event;
+
+            var mouseX = EO.pageX;
+            var mouseY = EO.pageY;
+
+            //left=20px and top=10px - images margin. subtract so that the picture does not "jump"
+            var imageX = mouseX - dragX - 20;
+            var imageY = mouseY - dragY - 10;
+
+            dragImg.style.left = imageX + "px";
+            dragImg.style.top = imageY + "px";
+        }
+        function drop(EO) {
+
+        }
+
+    </script>
+</body>
+
+</html>
