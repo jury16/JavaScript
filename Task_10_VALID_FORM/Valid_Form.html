@@ -57,10 +57,10 @@
                 <div>
                     <label>Рубрика каталога:</label>
                     <select name="division">
-                        <option value="1">бытовая техника</option>
-                        <option value="2">домашний уют</option>
-                        <option value="3">здоровье</option>
-                    </select>
+                        <option value="10">бытовая техника</option>
+                        <option value="20">домашний уют</option>
+                        <option value="30">здоровье</option>
+                    </select><span id="division"></span>
                 </div>
                 <div>
                     <label> Размещение:</label>
@@ -94,14 +94,15 @@
             var dateField = formTag.elements["dateSite"];
             var visitorsField = formTag.elements["visitors"];
             var emailField = formTag.elements["e_mail"];
+            var divisionField = formTag.elements["division"];
             var radioField = formTag.elements["payment"];
             var checkField = formTag.elements["reviews"];
             var descriptionField = formTag.elements["description"];
-            var fields = [devField, siteNameField, urlField, dateField, visitorsField, emailField, descriptionField,];
+            var fields = [devField, siteNameField, urlField, dateField, visitorsField, emailField, ];
 
             function onblurEmpty(fieldName) {
                 fieldName.onblur = function () {
-                    if (!fieldName.value) {
+                    if (!fieldName.value || fieldName.value == 10) {
                         checkEmptyField(fieldName);
                         return false;
                     } else {
@@ -113,6 +114,14 @@
             }
             function checkEmptyField(fieldName) {
                 document.getElementById(fieldName.name).innerHTML = " Это поле не должно быть пустым!";
+            }
+
+            fields.forEach(function (val, ind, arr) {
+                onblurEmpty(val);
+            });
+
+            if (divisionField.value == 10) {               
+                onblurEmpty(divisionField);
             }
 
             radioField.forEach(function (value, index, array) {
@@ -138,23 +147,16 @@
                 }
                 return true;
             }
-            fields.forEach(function (val, ind, arr) {
-                onblurEmpty(val);
-            });
+
+            onblurEmpty(descriptionField);
 
 
             function validation() {
 
                 try {
                     var emptyFields = [];
-                    fields.forEach(function (val, ind, arr) {
-                        checkFieldEmpty(val);
-                    });
-
-
-
                     function checkFieldEmpty(fieldName) {
-                        if (!fieldName.value) {
+                        if (!fieldName.value || fieldName.value == 10) {
                             checkEmptyField(fieldName);
                             emptyFields.push(fieldName);
                         } else {
@@ -166,6 +168,14 @@
                         fieldName.focus();
                     }
 
+                    fields.forEach(function (val, ind, arr) {
+                        checkFieldEmpty(val);
+                    });
+                   
+                    if (divisionField.value == 10) {                            
+                        emptyFields.push(divisionField);
+                        checkEmptyField(divisionField);
+                    }
                     if (!radioField.value) {
                         document.getElementById("payment").innerHTML = " Это поле не должно быть пустым!";
                         emptyFields.push(radioField[0]);
@@ -174,7 +184,7 @@
                     } else {
                         document.getElementById("payment").innerHTML = "";
                     }
-
+                    
 
                     if (!checkField.checked) {
                         checkEmptyField(checkField);
@@ -184,6 +194,7 @@
                         document.getElementById(checkField.name).innerHTML = "";
                     }
 
+                    checkFieldEmpty(descriptionField);
 
                     if (emptyFields.length != 0) {
                         emptyFields[0].focus();
