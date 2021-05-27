@@ -120,8 +120,14 @@
                 onblurEmpty(val);
             });
 
-            if (divisionField.value == 10) {               
-                onblurEmpty(divisionField);
+            divisionField.onchange = function () {
+                if (divisionField.value == 10) {
+                    checkEmptyField(divisionField);
+                    return false;
+                } else {
+                    document.getElementById(divisionField.name).innerHTML = "";
+                }
+                return true;
             }
 
             radioField.forEach(function (value, index, array) {
@@ -163,6 +169,7 @@
                             document.getElementById(fieldName.name).innerHTML = "";
                         }
                     }
+
                     function checkEmptyField(fieldName) {
                         document.getElementById(fieldName.name).innerHTML = " Это поле не должно быть пустым!";
                         fieldName.focus();
@@ -171,11 +178,15 @@
                     fields.forEach(function (val, ind, arr) {
                         checkFieldEmpty(val);
                     });
-                   
+
                     if (divisionField.value == 10) {                            
                         emptyFields.push(divisionField);
                         checkEmptyField(divisionField);
                     }
+
+                   
+
+
                     if (!radioField.value) {
                         document.getElementById("payment").innerHTML = " Это поле не должно быть пустым!";
                         emptyFields.push(radioField[0]);
