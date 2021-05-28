@@ -38,7 +38,7 @@
         var dragY = 0;
         var dragImg = null;
         var page = document.getElementById("page");
-
+        var zIndx = 0;
         
         page.addEventListener("mousedown", take, false);
         page.addEventListener("mouseup", drop, false);
@@ -56,17 +56,14 @@
             imgs[i].style.left = a + 'px';
             imgs[i].style.top = b + 'px';
         }
- 
+       
         function take(EO) {            
             EO = EO || document.event;
             dragImg = EO.target;
-
+            zIndx++;
             dragImg.style.position = 'absolute';
 
-            for (var i = 0; i < imgs.length; i++) {
-                imgs[i].style.zIndex = 0;
-            }
-            dragImg.style.zIndex = 1;
+            dragImg.style.zIndex = zIndx;
 
             //turn off the the pre-installed drag-n-drop function of the browser
             dragImg.ondragstart = function () {
