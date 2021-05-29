@@ -39,7 +39,7 @@
             page.addEventListener("mousedown", take, false);
             page.addEventListener("mouseup", drop, false);
 
-            // Make positions 'fixed' for all images
+            // Make positions 'absolute' for all images
             var imgs = page.getElementsByTagName('img');
             var arrPositions = {};
             for (var i = 0; i < imgs.length; i++) {
@@ -57,7 +57,6 @@
                 EO = EO || document.event;
                 dragImg = EO.target;
                 zIndx++;
-
 
                 dragImg.style.zIndex = zIndx;
 
@@ -91,7 +90,6 @@
                 var mouseX = EO.pageX;
                 var mouseY = EO.pageY;
 
-                //left=20px and top=10px - images margin. subtract so that the picture does not "jump"
                 var imageX = mouseX - dragX;
                 var imageY = mouseY - dragY;
 
