@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Drag_N_Drop_copy</title>
+    <title>Drag_N_Drop</title>
     <style>
         body {
             margin: 0px;
@@ -37,7 +37,7 @@
             var zIndx = 0;
 
             page.addEventListener("mousedown", take, false);
-            page.addEventListener("mouseup", drop, false);
+            
 
             // Make positions 'absolute' for all images
             var imgs = page.getElementsByTagName('img');
@@ -82,6 +82,7 @@
             function dragStop() {
                 document.onmousemove = null;
                 document.onmouseup = null;
+                dragImg.ondragstart = null;
             }
 
             function dragMove(EO) {
@@ -96,9 +97,7 @@
                 dragImg.style.left = imageX + "px";
                 dragImg.style.top = imageY + "px";
             }
-            function drop(EO) {
-
-            }
+            
         }
 
     </script>
