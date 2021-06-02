@@ -14,8 +14,8 @@
         "use script";
         function chaine(start, dictionary, target) {
             var currentWord = start;
-            dictionary.push(target);
-            var wordsArray = dictionary;
+            var wordsArray = dictionary.slice(0);
+            wordsArray.push(target);
             var targetWord = target;
             var reponse = [];
             function compar(str1, str2) {
@@ -69,6 +69,7 @@
         var start = "МУХА";
         var target = "СЛОН";
         console.log(chaine(start, dictionary, target));
+
         
     </script>
 </body>
