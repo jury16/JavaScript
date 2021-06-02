@@ -12,59 +12,64 @@
 
     <script>
         "use script";
-        var reponse = [];
-        function compar(str1, str2) {
-            let count = 0;
-            for (let i = 0; i < str1.length; i++) {
-                if (str1[i] != str2[i]) {
-                    count++;
+        function chaine(start, dictionary, target) {
+            var currentWord = start;
+            dictionary.push(target);
+            var wordsArray = dictionary;
+            var targetWord = target;
+            var reponse = [];
+            function compar(str1, str2) {
+                let count = 0;
+                for (let i = 0; i < str1.length; i++) {
+                    if (str1[i] != str2[i]) {
+                        count++;
+                    }
+
                 }
+                return count;
 
             }
-            return count;
+            function next(currentWord, wordsArray, targetWord) {
+                var words = [];
 
+                for (var i = 0; i < wordsArray.length; i++) {
+
+                    if (compar(currentWord, wordsArray[i]) == 1) {
+                        words.push(wordsArray[i]);
+                    }
+
+                }
+                if (words.length == 1) {
+                    reponse.push(words[0]);
+                }
+                //console.log(words);
+                for (var i = 0; i < words.length; i++) {
+                    if (words[i] == targetWord) {
+                        return words[i];
+                    }
+                    else {
+                        var j = wordsArray.indexOf(words[i]);
+                        wordsArray.splice(j, 1);
+                        //console.log(wordsArray);
+                        //console.log(words[i]);
+                        next(words[i], wordsArray, targetWord);
+                    }
+                }
+
+                return reponse;
+            }
+            return currentWord + ',' + next(currentWord, wordsArray, targetWord);
         }
-        function next(currentWord, wordsArray, targetWord) {
-            var words = [];
-
-            for (var i = 0; i < wordsArray.length; i++) {
-
-                if (compar(currentWord, wordsArray[i]) == 1) {
-                    words.push(wordsArray[i]);
-                }
-
-            }
-            if (words.length == 1) {
-                reponse.push(words[0]);
-            }
-            //console.log(words);
-            for (var i = 0; i < words.length; i++) {
-                if (words[i] == targetWord) {
-                    return words[i];
-                }
-                else {
-                    var j = wordsArray.indexOf(words[i]);
-                    wordsArray.splice(j, 1);
-                    //console.log(wordsArray);
-                    //console.log(words[i]);
-                    next(words[i], wordsArray, targetWord);
-                }
-            }
-
-            return reponse;
-        }
-        var wordsArray = ["ЛУЖА", "МУЗА", "ЛИРА", "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "СЛОТ", "ПАРА"];
+        
+        var dictionary = ["ЛУЖА", "МУЗА",  "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "ЛИРА","СЛОТ", "ПАРА"];
         var target = "ЛИСА";
         var start = "ЛОСЬ";
-        wordsArray.push(target);
-        console.log(start + ',' + next(start, wordsArray, target));
-        wordsArray = ["ЛУЖА", "МУЗА", "ЛИРА", "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "СЛОТ", "ПАРА"];
-        reponse = [];
+        console.log(chaine(start, dictionary, target));
+
         var start = "МУХА";
         var target = "СЛОН";
-        wordsArray.push(target);
-        console.log(start + ',' + next(start, wordsArray, target));
-
+        console.log(chaine(start, dictionary, target));
+        
     </script>
 </body>
 
