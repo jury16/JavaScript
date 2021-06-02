@@ -29,7 +29,7 @@
                 return count;
 
             }
-            function next(currentWord, wordsArray, targetWord) {
+            var rep = function(currentWord, wordsArray, targetWord) {
                 var words = [];
 
                 for (var i = 0; i < wordsArray.length; i++) {
@@ -52,13 +52,20 @@
                         wordsArray.splice(j, 1);
                         //console.log(wordsArray);
                         //console.log(words[i]);
-                        next(words[i], wordsArray, targetWord);
+                        rep(words[i], wordsArray, targetWord);
                     }
                 }
-
+                console.log(reponse);
+                if (!reponse.length) {
+                    return null;
+                }
                 return reponse;
             }
-            return currentWord + ',' + next(currentWord, wordsArray, targetWord);
+
+            if (!rep(currentWord, wordsArray, targetWord)) {
+                return `Не возможно построить цепочку превращений из ${currentWord} в ${target} из данного словаря`;
+            }
+            return currentWord + ',' + rep(currentWord, wordsArray, targetWord);
         }
         
         var dictionary = ["ЛУЖА", "МУЗА",  "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "ЛИРА","СЛОТ", "ПАРА"];
@@ -70,6 +77,10 @@
         var target = "СЛОН";
         console.log(chaine(start, dictionary, target));
 
+        dictionary = ["ЛУЖА", "МУЗА", "МЕХА", "ЛИГА",];
+        var start = "МУХА";
+        var target = "СЛОН";
+        console.log(chaine(start, dictionary, target));
         
     </script>
 </body>
