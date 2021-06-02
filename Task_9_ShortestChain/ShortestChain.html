@@ -24,7 +24,6 @@
                     if (str1[i] != str2[i]) {
                         count++;
                     }
-
                 }
                 return count;
 
@@ -37,12 +36,10 @@
                     if (compar(currentWord, wordsArray[i]) == 1) {
                         words.push(wordsArray[i]);
                     }
-
                 }
                 if (words.length == 1) {
                     reponse.push(words[0]);
                 }
-                //console.log(words);
                 for (var i = 0; i < words.length; i++) {
                     if (words[i] == targetWord) {
                         return words[i];
@@ -50,12 +47,9 @@
                     else {
                         var j = wordsArray.indexOf(words[i]);
                         wordsArray.splice(j, 1);
-                        //console.log(wordsArray);
-                        //console.log(words[i]);
                         rep(words[i], wordsArray, targetWord);
                     }
                 }
-                console.log(reponse);
                 if (!reponse.length) {
                     return null;
                 }
@@ -77,8 +71,7 @@
         var target = "СЛОН";
         console.log(chaine(start, dictionary, target));
 
-        dictionary = ["ЛУЖА", "МУЗА", "МЕХА", "ЛИГА",];
-        var start = "МУХА";
+        var start = "МЫЛО";
         var target = "СЛОН";
         console.log(chaine(start, dictionary, target));
         
