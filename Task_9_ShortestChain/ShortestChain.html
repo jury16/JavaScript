@@ -12,52 +12,58 @@
 
     <script>
         "use script";
-        function chains(start, target, dict) {
-            if (start == target) return (start + ',' + target);
-            var wordlength = start.length;
-            var count = 0;
-            var qeueResult = [start,];
-            var qeue = [start,];
-            while (qeue.length != 0) {
-                count++;
-                for (let i = 0; i < qeue.length; ++i) {
-                    let word = qeue[0].split("");
-                    qeue.shift();
-                    for (let pos = 0; pos < wordlength; ++pos) {
-                        var origChar = word[pos];
-                        for (let c = 'А'.charCodeAt(0); c <= 'Я'.charCodeAt(0); ++c) {
-                            word[pos] = String.fromCharCode(c);
-                            if (word.join("") == target) {
-                                return [qeueResult + ',' + target, count];
+        var reponse = [];
+        function compar(str1, str2) {
+            let count = 0;
+            for (let i = 0; i < str1.length; i++) {
+                if (str1[i] != str2[i]) {
+                    count++;
+                }
 
-                            }
-                            if (dict.has(word.join(""))) {
-                                dict.delete(word.join(""));
-                                qeue.push(word.join(""));
-                                qeueResult.push(word.join(""));
-                            }
-                            else  continue;                             
-                            
-                        }
-                        word[pos] = origChar;
-                    }
+            }
+            return count;
+
+        }
+        function next(currentWord, wordsArray, targetWord) {
+            var words = [];
+
+            for (var i = 0; i < wordsArray.length; i++) {
+
+                if (compar(currentWord, wordsArray[i]) == 1) {
+                    words.push(wordsArray[i]);
+                }
+
+            }
+            if (words.length == 1) {
+                reponse.push(words[0]);
+            }
+            //console.log(words);
+            for (var i = 0; i < words.length; i++) {
+                if (words[i] == targetWord) {
+                    return words[i];
+                }
+                else {
+                    var j = wordsArray.indexOf(words[i]);
+                    wordsArray.splice(j, 1);
+                    //console.log(wordsArray);
+                    //console.log(words[i]);
+                    next(words[i], wordsArray, targetWord);
                 }
             }
 
-            return 0;
+            return reponse;
         }
-        d1 = ["ЛУЖА", "МУЗА", "ЛИРА", "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "СЛОТ", "ПАРА",];
-        var dict = new Set(d1);
+        var wordsArray = ["ЛУЖА", "МУЗА", "ЛИРА", "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "СЛОТ", "ПАРА"];
+        var target = "ЛИСА";
+        var start = "ЛОСЬ";
+        wordsArray.push(target);
+        console.log(start + ',' + next(start, wordsArray, target));
+        wordsArray = ["ЛУЖА", "МУЗА", "ЛИРА", "МЕХА", "ЛИГА", "ТАРА", "ЛИПА", "ТУРА", "ПАРК", "ЛОЖЬ", "ЛУПА", "ПЛОТ", "МУРА", "ПАУК", "ПАУТ", "ПЛУТ", "ЛОЖА", "СЛОТ", "ПАРА"];
+        reponse = [];
         var start = "МУХА";
         var target = "СЛОН";
-        result = chains(start, target, dict);
-        console.log("Shortest chain is: " + result[0]);
-        console.log("Shortest length is: " + result[1]);
-        start = "ЛИСА";
-        target = "ЛОСЬ";
-        result = chains(start, target, dict);
-        console.log("Shortest chain is: " + result[0]);
-        console.log("Shortest length is: " + result[1]);
+        wordsArray.push(target);
+        console.log(start + ',' + next(start, wordsArray, target));
 
     </script>
 </body>
