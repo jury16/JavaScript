@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clock-HTML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        "use strict";
+        var time = new Date();
+        var wrapperWidth = 400;
+        var wrapperHeight = 400;
+        var digitalClockWidth = 0.35 * (wrapperWidth);
+        var digitalClockHeight = 0.08 * (wrapperWidth);
+        var clockWidth = 0.8 * (wrapperWidth);
+        var clockHeight = 0.8 * (wrapperWidth);
+        var numbersWidth = 0.12 * (wrapperWidth);
+        var numbersHeight = 0.12 * (wrapperWidth);
+        var clockCenterX = clockWidth / 2; // x clock center coordinate
+        var clockCenterY = clockHeight / 2; // y clock center coordinate
+        var numbersRadius = 0.8 * clockWidth / 2;
+        var borderRad = '20%'; // hands dorder radius
+        var hoursHeight = 0.25 * wrapperWidth;
+        var hoursWidth = 0.025 * wrapperWidth;
+        var minutesHeight = 0.35 * wrapperWidth;
+        var minutesWidth = 0.015 * wrapperWidth;
+        var secondsHeight = 0.45 * wrapperWidth;
+        var secondsWidth = 0.01 * wrapperWidth;
+        var hoursAngle = (time.getHours() + (1 / 60) * time.getMinutes()) * 30;
+        var minutesAngle = 6 * (time.getMinutes() + (1 / 60) * time.getSeconds())
+        var secondsAngle = 6 * time.getSeconds() - 6;
+        //create wrapper
+        var wrapper = document.createElement('div');
+        document.body.append(wrapper);
+        wrapper.style.width = `${wrapperWidth}px`;
+        wrapper.style.height = `${wrapperHeight}px`;
+        wrapper.style.position = 'relative';
+
+        //create border clock font
+        var clock = document.createElement('div');
+        wrapper.appendChild(clock);
+        clock.style.position = 'absolute';
+        clock.style.width = `${clockWidth}px`;
+        clock.style.height = `${clockHeight}px`;
+        clock.style.backgroundColor = '#FCCA66';
+        clock.style.borderRadius = '50%';
+        clock.style.left = `${(wrapperWidth - clockWidth)/2}px`;
+        clock.style.top = `${(wrapperHeight - clockHeight)/2}px`;
+
+        // create digital clock
+        var digitalClock = document.createElement('div');
+        clock.appendChild(digitalClock);
+        digitalClock.style.width = `${digitalClockWidth}px`;
+        digitalClock.style.height = `${digitalClockHeight}px`;
+        digitalClock.style.position = 'absolute';
+        digitalClock.style.left = `${clockCenterX - digitalClockWidth / 2}px`;
+        digitalClock.style.top = `${clockCenterY - 2.0 * digitalClockHeight}px`;
+        digitalClock.style.fontSize = '28px';
+        digitalClock.style.textAlign = 'center';
+
+        //create numbers fonts
+        for (var i = 1; i < 13; i++) {
+            var numbers = document.createElement('div');
+            clock.appendChild(numbers);
+            numbers.style.position = 'absolute';
+            numbers.style.width = `${numbersWidth}px`;
+            numbers.style.height = `${numbersWidth}px`;
+            numbers.style.backgroundColor = '#48B382';
+            numbers.style.borderRadius = '50%';
+            var angle = 30 * i * Math.PI / 180 - Math.PI / 2;
+            numbers.style.left = `${clockCenterX + numbersRadius * Math.cos(angle) - numbersWidth / 2}px `;
+            numbers.style.top = `${clockCenterY + numbersRadius * Math.sin(angle) - numbersWidth / 2}px`;
+            var digits = document.createElement('p');
+            numbers.appendChild(digits);
+            numbers.style.display = 'flex';
+            numbers.style.alignItems = 'center';
+            numbers.style.justifyContent = 'center';
+            numbers.style.fontSize = '24px';
+            digits.style.top = 'auto';
+            digits.innerHTML = `${i}`;
+        }
+        // create clock hands
+        var hours = document.createElement("div");
+        clock.appendChild(hours);
+        hours.style.position = 'absolute';
+        hours.style.width = `${hoursWidth}px`;
+        hours.style.height = `${hoursHeight}px`;
+        hours.style.backgroundColor = '#000000';
+        hours.style.borderRadius = borderRad;
+        hours.style.left = `${clockCenterX - 0.5 * hoursWidth}px`;
+        hours.style.bottom = `${clockCenterY - 0.3 * hoursHeight}px`;
+        hours.style.transformOrigin = `center ${0.7 * hoursHeight}px`;
+
+        var minutes = document.createElement("div");
+        clock.appendChild(minutes);
+        minutes.style.position = 'absolute';
+        minutes.style.width = `${minutesWidth}px`;
+        minutes.style.height = `${minutesHeight}px`;
+        minutes.style.backgroundColor = '#000000';
+        minutes.style.borderRadius = borderRad;
+        minutes.style.left = `${clockCenterX - 0.5 * minutesWidth}px`;
+        minutes.style.bottom = `${clockCenterY - 0.2 * minutesHeight}px`;
+        minutes.style.transformOrigin = `center ${0.8 * minutesHeight}px`;
+
+        var seconds = document.createElement("div");
+        clock.appendChild(seconds);
+        seconds.style.position = 'absolute';
+        seconds.style.width = `${secondsWidth}px`;
+        seconds.style.height = `${secondsHeight}px`;
+        seconds.style.backgroundColor = '#000000';
+        seconds.style.borderRadius = borderRad;
+        seconds.style.left = `${clockCenterX - 0.5 * secondsWidth}px`;
+        seconds.style.bottom = `${clockCenterY - 0.15 * secondsHeight}px`;
+        seconds.style.transformOrigin = `center ${0.85 * secondsHeight}px`;
+
+        function handsPosition() {
+            secondsAngle += 6;
+            minutesAngle += 6 * (1 / 60);
+            hoursAngle += 6 * (1 / 360);
+            seconds.style.transform = 'rotate(' + secondsAngle + 'deg)';
+            minutes.style.transform = 'rotate(' + minutesAngle + 'deg)';
+            hours.style.transform = 'rotate(' + hoursAngle + 'deg)';
+            var time = new Date();
+            digitalClock.innerHTML = time.toLocaleTimeString('it-IT');
+        }
+
+        window.onload = handsPosition();
+        window.setInterval(handsPosition, 1000);
+    </script>
+</body>
+
+</html>
