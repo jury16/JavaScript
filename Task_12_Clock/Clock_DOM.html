@@ -65,14 +65,12 @@
         clock.style.left = `${(wrapperWidth - clockWidth) / 2}px`;
         clock.style.bottom = `${(wrapperHeight - clockHeight) / 2}px`;
         // create digital clock
-        var digitalClock = document.createElement('div');
-        clock.appendChild(digitalClock);
+        var digitalClock = document.createElement('div');        
         styles(clock, digitalClock, digitalClockWidth, digitalClockHeight, 'absolute', '#fffff', 0, 0.5, -1.2, 0, '28px', 'center');
 
         //create numbers fonts
         for (var i = 1; i <= 12; i++) {
-            var numbers = document.createElement('div');
-            clock.appendChild(numbers);
+            var numbers = document.createElement('div');            
             styles(clock, numbers, numbersWidth, numbersWidth, 'absolute', '#48B382', '50%');
             var angle = 30 * i * Math.PI / 180 - Math.PI / 2;
             numbers.style.left = `${clockCenterX + numbersRadius * Math.cos(angle) - numbersWidth / 2}px `;
