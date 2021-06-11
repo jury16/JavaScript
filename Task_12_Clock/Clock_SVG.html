@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clock-SVG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <svg>
+
+    </svg>
+    <script>
+        "use strict";
+        var x = document.getElementsByTagName("svg"),
+            wrapper = x[0],
+            wrapperSide = 300,
+            xmlns = 'http://www.w3.org/2000/svg',
+            wrapperCenterX,
+            wrapperCenterY,
+            clockCircle,
+            clockCircleCenter = 150, //coordinats x, y of clock center
+            clockCircleRadius = 135,
+            clockCircleColor = '#FCCA66',
+            angleStep = 0,
+            radiusNumbers = 105,
+            digitalClock,
+            digitalClockRad = 45,
+            digitalClockX,
+            digitalClockY,
+            digitalClockText,
+            digitalClockTextX,
+            digitalClockTextY,
+            time = new Date(),
+            hours,
+            hoursHeight = 50,
+            hoursWidth = 8,
+            hoursAngle = (time.getHours() + (1 / 60) * time.getMinutes()) * 30,
+            minutes,
+            minutesHeight = 90,
+            minuesWidth = 6,
+            seconds,
+            secondsHeight = 120,
+            secondsWidth = 3,
+            minutesAngle = 6 * (time.getMinutes() + (1 / 60) * time.getSeconds()),
+            secondsAngle = 6 * time.getSeconds() - 6;
+        //function to create styles
+        function createStyles(name, cx, cy, r, color,) {
+            name.setAttribute("cx", cx);
+            name.setAttribute("cy", cy);
+            name.setAttribute("r", r);
+            name.setAttribute("fill", color);
+        }
+        //function to create text
+        function createText(name, x, y, textAnchor, dominantBaseline, fontSize) {
+            name.setAttribute("x", x);
+            name.setAttribute("y", y);
+            name.setAttribute("text-anchor", textAnchor);
+            name.setAttribute("dominant-baseline", dominantBaseline);
+            name.style.fontSize = fontSize;
+        }
+        //create hands
+        function createHands(name, x1, y1, x2, y2, stroke, width) {
+            name.setAttribute("x1", x1);
+            name.setAttribute("y1", y1);
+            name.setAttribute("x2", x2);
+            name.setAttribute("y2", y2);
+            name.setAttribute("stroke", stroke);
+            name.setAttribute("stroke-width", width);
+            name.setAttribute("stroke-linecap", "round");
+        }
+        wrapper.style.width = wrapperSide;
+        wrapper.style.height = wrapperSide;
+        wrapper.style.xmlns = xmlns;
+        //create main clock
+        clockCircle = document.createElementNS(xmlns, "circle");
+        createStyles(clockCircle, clockCircleCenter, clockCircleCenter, clockCircleRadius, clockCircleColor,);
+        wrapper.appendChild(clockCircle);
+        wrapperCenterX = wrapper.getBoundingClientRect().left + wrapper.getBoundingClientRect().width / 2;
+        wrapperCenterY = wrapper.getBoundingClientRect().top + wrapper.getBoundingClientRect().height / 2;
+
+        // create digital clock
+        digitalClock = document.createElementNS(xmlns, "rect");
+        wrapper.appendChild(digitalClock);
+        digitalClockText = document.createElementNS(xmlns, "text");
+        digitalClockText = wrapper.appendChild(digitalClockText);
+        digitalClockX = (wrapperCenterX - digitalClock.getBoundingClientRect().width / 2) - wrapper.getBoundingClientRect().left;
+        digitalClockY = (wrapperCenterY - digitalClockRad) - wrapper.getBoundingClientRect().left;        
+        digitalClockTextX = (wrapperCenterX - digitalClock.getBoundingClientRect().width / 2) - wrapper.getBoundingClientRect().left;
+        digitalClockTextY = (wrapperCenterY - digitalClockRad) - wrapper.getBoundingClientRect().top;       
+        
+        createStyles(digitalClock, digitalClockX, digitalClockY, digitalClockRad, "none",);
+        createText(digitalClockText, digitalClockTextX, digitalClockTextY, "middle", "central", 25);
+
+        //create numbers
+        for (var i = 1; i <= 12; i++) {
+            var numbersFont = document.createElementNS(xmlns, "circle"),
+                numbersText = document.createElementNS(xmlns, "text"),
+                angle,
+                numbersFontX,
+                numbersFontY,
+                numbersFontRad = 24,
+                numbersFontColor = "#48B382";
+
+            angleStep += 30; //degrees between numbers
+            angle = angleStep / 180 * Math.PI; //transfer to radiants
+
+            numbersFontX = Math.round(wrapperCenterX + radiusNumbers * Math.sin(angle) - wrapper.getBoundingClientRect().left);
+            numbersFontY = Math.round(wrapperCenterY - radiusNumbers * Math.cos(angle) - wrapper.getBoundingClientRect().top);
+
+            // create fonts
+            createStyles(numbersFont, numbersFontX, numbersFontY, numbersFontRad, numbersFontColor,);
+            numbersFont = wrapper.appendChild(numbersFont);
+
+            // create numbers
+            numbersText.innerHTML = i;
+            createText(numbersText, numbersFontX, numbersFontY, "middle", "central", 20);
+            numbersText = wrapper.appendChild(numbersText);            
+        }
+        // create hours hand
+        var hoursX1 = clockCircleCenter - wrapper.getBoundingClientRect().left;
+        var hoursY1 = clockCircleCenter - hoursHeight - wrapper.getBoundingClientRect().top;
+        var hoursX2 = clockCircleCenter - wrapper.getBoundingClientRect().left
+        var hoursY2 = clockCircleCenter + 15;
+        hours = document.createElementNS(xmlns, "line");
+        wrapper.appendChild(hours);
+        createHands(hours, hoursX1, hoursY1, hoursX2, hoursY2, "black", hoursWidth);
+        //create minutes hands
+        var minutesX1 = clockCircleCenter - wrapper.getBoundingClientRect().left;
+        var minutesY1 = clockCircleCenter - minutesHeight - wrapper.getBoundingClientRect().top;
+        var minutesX2 = clockCircleCenter - wrapper.getBoundingClientRect().left
+        var minutesY2 = clockCircleCenter + 15;
+        minutes = document.createElementNS(xmlns, "line");
+        wrapper.appendChild(minutes);
+        createHands(minutes, minutesX1, minutesY1, minutesX2, minutesY2, "black", minuesWidth);
+        //create seconds hands
+        var secondsX1 = clockCircleCenter - wrapper.getBoundingClientRect().left;
+        var secondsY1 = clockCircleCenter - secondsHeight - wrapper.getBoundingClientRect().top;
+        var secondsX2 = clockCircleCenter - wrapper.getBoundingClientRect().left
+        var secondsY2 = clockCircleCenter + 15;
+        seconds = document.createElementNS(xmlns, "line");
+        wrapper.appendChild(seconds);
+        createHands(seconds, secondsX1, secondsY1, secondsX2, secondsY2, "black", secondsWidth);
+
+        hours.style.transformOrigin = "center 150px";
+        minutes.style.transformOrigin = "center 150px";
+        seconds.style.transformOrigin = "center 150px";
+
+        function handsPosition() {
+            secondsAngle += 6;
+            minutesAngle += 6 * (1 / 60);
+            hoursAngle += 6 * (1 / 360);
+            transform(seconds, secondsAngle);
+            transform(minutes, minutesAngle);
+            transform(hours, hoursAngle);           
+            var time = new Date();
+            digitalClockText.innerHTML = time.toLocaleTimeString('it-IT');
+        }
+
+        function transform(name, angle) {
+            name.style.transform = `rotate(${angle}deg)`;
+        }
+
+        window.onload = handsPosition;
+        window.setInterval(handsPosition, 1000);
+
+    </script>
+</body>
+
+</html>
