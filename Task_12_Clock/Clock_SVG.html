@@ -58,7 +58,8 @@
             name.setAttribute("fill", color);
         }
         //function to create text
-        function createText(name, x, y, textAnchor, dominantBaseline, fontSize) {
+        function createText(parentName, name, x, y, textAnchor, dominantBaseline, fontSize) {
+            parentName.appendChild(name);
             name.setAttribute("x", x);
             name.setAttribute("y", y);
             name.setAttribute("text-anchor", textAnchor);
@@ -66,7 +67,8 @@
             name.style.fontSize = fontSize;
         }
         //create hands
-        function createHands(name, x1, y1, x2, y2, stroke, width) {
+        function createHands(parentName, name, x1, y1, x2, y2, stroke, width) {
+            parentName.appendChild(name);
             name.setAttribute("x1", x1);
             name.setAttribute("y1", y1);
             name.setAttribute("x2", x2);
@@ -78,6 +80,7 @@
         wrapper.style.width = wrapperSide;
         wrapper.style.height = wrapperSide;
         wrapper.style.xmlns = xmlns;
+        console.log(wrapper);
         //create main clock
         clockCircle = document.createElementNS(xmlns, "circle");
         createStyles(clockCircle, clockCircleCenter, clockCircleCenter, clockCircleRadius, clockCircleColor,);
@@ -87,7 +90,6 @@
 
         // create digital clock
         digitalClock = document.createElementNS(xmlns, "rect");
-        wrapper.appendChild(digitalClock);
         digitalClockText = document.createElementNS(xmlns, "text");
         digitalClockText = wrapper.appendChild(digitalClockText);
         digitalClockX = (wrapperCenterX - digitalClock.getBoundingClientRect().width / 2) - wrapper.getBoundingClientRect().left;
@@ -95,8 +97,8 @@
         digitalClockTextX = (wrapperCenterX - digitalClock.getBoundingClientRect().width / 2) - wrapper.getBoundingClientRect().left;
         digitalClockTextY = (wrapperCenterY - digitalClockRad) - wrapper.getBoundingClientRect().top;       
         
-        createStyles(digitalClock, digitalClockX, digitalClockY, digitalClockRad, "none",);
-        createText(digitalClockText, digitalClockTextX, digitalClockTextY, "middle", "central", 25);
+        createStyles(wrapper, digitalClock, digitalClockX, digitalClockY, digitalClockRad, "none",);
+        createText(wrapper, digitalClockText, digitalClockTextX, digitalClockTextY, "middle", "central", 25);
 
         //create numbers
         for (var i = 1; i <= 12; i++) {
@@ -115,8 +117,8 @@
             numbersFontY = Math.round(wrapperCenterY - radiusNumbers * Math.cos(angle) - wrapper.getBoundingClientRect().top);
 
             // create fonts
-            createStyles(numbersFont, numbersFontX, numbersFontY, numbersFontRad, numbersFontColor,);
-            numbersFont = wrapper.appendChild(numbersFont);
+            createStyles(wrapper, numbersFont, numbersFontX, numbersFontY, numbersFontRad, numbersFontColor,);
+            
 
             // create numbers
             numbersText.innerHTML = i;
@@ -129,24 +131,21 @@
         var hoursX2 = clockCircleCenter - wrapper.getBoundingClientRect().left
         var hoursY2 = clockCircleCenter + 15;
         hours = document.createElementNS(xmlns, "line");
-        wrapper.appendChild(hours);
-        createHands(hours, hoursX1, hoursY1, hoursX2, hoursY2, "black", hoursWidth);
+        createHands(wrapper, hours, hoursX1, hoursY1, hoursX2, hoursY2, "black", hoursWidth);
         //create minutes hands
         var minutesX1 = clockCircleCenter - wrapper.getBoundingClientRect().left;
         var minutesY1 = clockCircleCenter - minutesHeight - wrapper.getBoundingClientRect().top;
         var minutesX2 = clockCircleCenter - wrapper.getBoundingClientRect().left
         var minutesY2 = clockCircleCenter + 15;
         minutes = document.createElementNS(xmlns, "line");
-        wrapper.appendChild(minutes);
-        createHands(minutes, minutesX1, minutesY1, minutesX2, minutesY2, "black", minuesWidth);
+        createHands(wrapper, minutes, minutesX1, minutesY1, minutesX2, minutesY2, "black", minuesWidth);
         //create seconds hands
         var secondsX1 = clockCircleCenter - wrapper.getBoundingClientRect().left;
         var secondsY1 = clockCircleCenter - secondsHeight - wrapper.getBoundingClientRect().top;
         var secondsX2 = clockCircleCenter - wrapper.getBoundingClientRect().left
         var secondsY2 = clockCircleCenter + 15;
         seconds = document.createElementNS(xmlns, "line");
-        wrapper.appendChild(seconds);
-        createHands(seconds, secondsX1, secondsY1, secondsX2, secondsY2, "black", secondsWidth);
+        createHands(wrapper, seconds, secondsX1, secondsY1, secondsX2, secondsY2, "black", secondsWidth);
 
         hours.style.transformOrigin = "center 150px";
         minutes.style.transformOrigin = "center 150px";
