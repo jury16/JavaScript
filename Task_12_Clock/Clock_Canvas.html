@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clock_CANVAS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="wrapper" width="400" height="400">
+        
+    </canvas>
+
+    <script>
+        "use strict";
+        var canvas = document.getElementById('wrapper'),            
+            ctx = canvas.getContext("2d"),
+            canvasCenterX = canvas.offsetWidth / 2, 
+            canvasCenterY = canvas.offsetHeight / 2, 
+            radius = 120,
+            angle = 0,
+            distanceAngleNubers = 30,
+            digitalClock,
+            digitalClockText,
+            digitalClockWidth = 90,
+            digitalClockHeight = 25,
+            radiusDigitalClock = 55,
+            hour,
+            hourHeight = 65,
+            hourWidth = 10,
+            minute,
+            minuteHeight = 105,
+            minuteWidth = 6,
+            second,
+            secondHeight = 125,
+            secondWidth = 3,
+            hourPosition,
+            minutePosition,
+            secondPosition;
+        function clock() {
+            ctx.fillStyle = "#FCCA66";
+            ctx.beginPath();
+            ctx.arc(canvasCenterX, canvasCenterY, 150, 0, Math.PI * 2, false);
+            ctx.fill();
+
+            for (var i = 1; i <= 12; i++) {
+                var numberCircleX,
+                    numberCircleY,
+                    numberRadius = 24,
+                    numberColor = "#48B382",
+                    numberAngle;
+
+                angle += distanceAngleNubers;
+                numberAngle = angle / 180 * Math.PI;
+
+                numberCircleX = Math.round(canvasCenterX + radius * Math.sin(numberAngle));
+                numberCircleY = Math.round(canvasCenterY - radius * Math.cos(numberAngle));
+
+                ctx.beginPath();
+                ctx.fillStyle = numberColor;
+                ctx.arc(numberCircleX, numberCircleY, numberRadius, 0, Math.PI * 2, false);
+                ctx.fill();
+
+                ctx.fillStyle = 'black';
+                ctx.font = "normal normal 20px 'Times New Roman'";
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(i, numberCircleX, numberCircleY);
+            }
+
+        }
+        function digitalClock() {
+            var time = new Date();
+            ctx.globalCompositeOperation = "source-over";
+            ctx.fillStyle = "#FCCA66";
+            ctx.beginPath();
+            ctx.fillRect(canvasCenterX - digitalClockWidth / 2, canvasCenterY - radiusDigitalClock - digitalClockHeight / 2, 100, 25);
+            ctx.fill();
+            ctx.fillStyle = "black";
+            digitalClockText = time.toLocaleTimeString('it-IT');
+            ctx.font = "normal normal 28px 'Times New Roman'";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(digitalClockText, canvasCenterX, canvasCenterY - radiusDigitalClock);
+            ctx.fill();
+        }
+        function hand(elementDeg, elementWidth, elementHeght) {            
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = elementWidth;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(canvasCenterX, canvasCenterY);
+            ctx.lineTo(canvasCenterX + elementHeght * Math.sin(elementDeg / 180 * Math.PI), canvasCenterY - elementHeght * Math.cos(elementDeg / 180 * Math.PI));
+            ctx.stroke();
+        }
+        function handsPosition() {
+            var time = new Date();
+            var hourDeg = 30 * (time.getHours() + (1 / 60) * time.getMinutes());
+            var minuteDeg = 6 * (time.getHours() + (1 / 60) * time.getMinutes());
+            var secondDeg = 6 * time.getSeconds();
+            hand(minuteDeg, minuteWidth, minuteHeight);
+            hand(hourDeg, hourWidth, hourHeight);
+            hand(secondDeg, secondWidth, secondHeight);
+        }
+
+        function main() {
+            clock(); 
+            digitalClock(); 
+            handsPosition();
+        }
+        window.onload = main;
+        window.setInterval(main, 1000);
+    </script>
+</body>
+
+</html>
