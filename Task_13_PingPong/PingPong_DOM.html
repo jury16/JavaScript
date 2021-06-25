@@ -30,7 +30,7 @@
 
         }
         .field {       
-
+            
             background-color: yellow;
         }
         .paddle_1{
@@ -141,7 +141,7 @@
                  ball.style.top = this.ballY + "px";
              }
          };
-         console.log('field.PositionX=', field.getBoundingClientRect().left);
+         console.log('fieldPositionX=', field.getBoundingClientRect().left);
          console.log('field.width=', field.getBoundingClientRect().width / 2);
          console.log('ball.width=', ball.getBoundingClientRect().width / 2);
          ballPosition.update();
@@ -213,8 +213,8 @@
              if ((ballPosition.ballY < paddlesPosition.paddle_2Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_2Y) && (ballPosition.ballX + ballPosition.width > paddlesPosition.paddle_2X)) {
                  ballPosition.moveX = - ballPosition.moveX;
              }
-             else if ((!(ballPosition.ballY < paddlesPosition.paddle_2Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_2Y) && (ballPosition.ballX + ballPosition.width >= field.getBoundingClientRect().left + field.getBoundingClientRect().width))) {
-                 console.log('ballX + ball.width = ', ballPosition.ballX + ballPosition.width);
+             else if ((!(ballPosition.ballY < paddlesPosition.paddle_2Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_2Y) && (ballPosition.ballX + ballPosition.width > field.getBoundingClientRect().left + field.getBoundingClientRect().width))) {
+                 console.log('ballX = ', ballPosition.ballX + ballPosition.width);
                  console.log('border = ', field.getBoundingClientRect().left + field.getBoundingClientRect().width);
                  debugger;
              }
