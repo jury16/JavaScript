@@ -4,56 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>PingPong_DOM</title>
+    <title>PingPong_Dom</title>
     <style>
         *{
             margin: 0px;
             padding: 0px;
         }
-        body {
-            margin: 10px;
-            width: 602px;
+        body{
+            margin: 50px;
+            padding: 0px;
         }
-
-        .score {
-            margin: 30px auto 10px auto;
-            width: 100px;
-            font-size: 48px;
-            text-align: center;
-            line-height: 48px;
-        }
-        .button {
-            float: left;
-            align-items: center;
-            margin-top: -30px;            
-            position: absolute;
-
-        }
-        .field {       
-            
-            background-color: yellow;
-        }
-        .paddle_1{
-            width: 10px;
-            height: 100px;
-            background-color: darkgreen;
-            position: absolute;
-        }
-        .paddle_2 {
-            width: 10px;
-            height: 100px;
-            background-color: blue;
-            position: absolute;
-
-        }
-        .ball {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background-color: red;
-            position: absolute;
-
-        }
+        
     </style>
 </head>
 
@@ -62,170 +23,210 @@
         
         
      <script>
-        "use strict";
-
-         var field = document.createElement('div'),
-             start = document.createElement('input'),
-             score = document.createElement('div'),
-             paddle_1 = document.createElement('div'),
-             paddle_2 = document.createElement('div'),
-             ball = document.createElement('div'),
-             borderField = '1px',
-             score_1 = 0,
-             score_2 = 0,
-             paddlesPosition,
-             ballPosition,
-             pandleSpeed = 5;
-         requestAnimationFrame(game);
-         //buton start
+         "use strict";
+         //wrapper
+         var wrapper = document.createElement('div');
+         document.body.append(wrapper);
+         wrapper.style.width = '600px';         
+         //button
+         var start = document.createElement('input');
          start.type = "button";
-         start.value = "старт!";
-         start.classList.add('button');
-         //document.body.insertBefore(start, document.body.children[0]);
-         document.body.appendChild(start);
+         start.value = "start!";
+         start.style.position = 'absolute';
+         start.style.top = '75px';
+         start.style.width = '60px';
+         wrapper.appendChild(start);
+         start.onclick = gameStart;
+         //score
+         var score = document.createElement('div'),
+             score1 = 0,
+             score2 = 0;
+         scoreInnerHTML();
+         score.style.margin = '10px auto 10px auto';
+         score.style.width = '100px';
+         score.style.fontSize = '32px';
+         score.style.textAlign = 'center';
+         wrapper.appendChild(score);
+         function scoreInnerHTML() {
+             score.innerHTML = score1 + ":" + score2;
+         }
          //field
+         var field = document.createElement('div');            
          field.style.width = '600px';
          field.style.height = '400px';
-         field.style.border = borderField;
-         field.style.borderStyle = 'solid';
-         field.classList.add('field');
-         
-         document.body.append(field);
-         
-         //score
-         score.classList.add('score');
-         scoreInnerHTML();
-         document.body.insertBefore(score, document.body.children[1]);
-         function scoreInnerHTML() {
-             score.innerHTML = score_1 + ":" + score_2;
-         }
-         //paddles positions
-         paddle_1.classList.add('paddle_1');
-         paddle_2.classList.add('paddle_2');
-         field.appendChild(paddle_1);
-         field.appendChild(paddle_2);
-         paddlesPosition = {
-             width: 10,
-             height: 100,
-             paddle_1Move : 0,
-             paddle_2Move: 0,
-             paddle_1X: field.getBoundingClientRect().left + parseInt(borderField),
-             paddle_1Y: field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - paddle_1.getBoundingClientRect().height / 2,
-             paddle_2X: field.getBoundingClientRect().left + field.getBoundingClientRect().width - paddle_2.getBoundingClientRect().width - parseInt(borderField),
-             paddle_2Y: field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - paddle_1.getBoundingClientRect().height / 2,
-             update: function () {
-                 paddle_1.style.left = this.paddle_1X + "px";
-                 paddle_1.style.top = this.paddle_1Y + "px";
-                 paddle_2.style.left = this.paddle_2X + "px";
-                 paddle_2.style.top = this.paddle_2Y + "px";
-             }
-            
-         };
-         console.log('paddle_1X=', field.getBoundingClientRect().left + parseInt(borderField));
-         console.log('paddle_2X=', field.getBoundingClientRect().left + field.getBoundingClientRect().width - paddle_2.getBoundingClientRect().width - parseInt(borderField));
-
-         paddlesPosition.update();
+         field.style.border = '1px solid';
+         field.style.backgroundColor = 'yellow';
+         field.style.left = '0px';
+         field.style.top = '30px';
+         wrapper.appendChild(field);
+         //paddles
+         var paddle1 = document.createElement('div');
+         var paddle2 = document.createElement('div');
+         paddle1.style.width = '10px';
+         paddle1.style.height = '100px';         
+         paddle1.style.backgroundColor = 'green';
+         paddle1.style.position = 'absolute';         
+         paddle2.style.width = '10px';
+         paddle2.style.height = '100px';
+         paddle2.style.backgroundColor = 'blue';
+         paddle2.style.position = 'absolute';
+         field.appendChild(paddle2);
+         field.appendChild(paddle1);
          //ball
-         ball.classList.add('ball');
-         field.appendChild(ball);
-         ballPosition = {
-             ballX: field.getBoundingClientRect().left + field.getBoundingClientRect().width / 2 - ball.getBoundingClientRect().width / 2,
-             ballY: field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - ball.getBoundingClientRect().height / 2,
-             moveX: 0,
-             moveY: 0,
-             width: 28,
-             height: 28,
-
+         var ball = document.createElement('div');
+         ball.style.width = '30px';
+         ball.style.height = '30px';
+         ball.style.borderRadius = '50%';
+         ball.style.backgroundColor = 'red';
+         ball.style.position = 'absolute';         
+         field.appendChild(ball);         
+         //message
+         var message = document.createElement('div'),
+             messageText = 'GOAL!';
+         message.style.fontSize = '50px';
+         message.style.color = 'red';
+         message.style.textAlign = 'center';
+         field.appendChild(message);
+         let paddlesPos = {
+             paddle1X: field.getBoundingClientRect().left + 1,
+             paddle1Y: field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - parseInt(paddle2.style.height) / 2 + 1,
+             paddle2X: field.getBoundingClientRect().left + field.getBoundingClientRect().width - parseInt(paddle2.style.width) - 1,
+             paddle2Y: field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - parseInt(paddle2.style.height) / 2 + 1,
+             paddle1Move: 0,
+             paddle2Move: 0,
              update: function () {
-                 ball.style.left = this.ballX + "px";
-                 ball.style.top = this.ballY + "px";
-             }
-         };
-         console.log('fieldPositionX=', field.getBoundingClientRect().left);
-         console.log('field.width=', field.getBoundingClientRect().width / 2);
-         console.log('ball.width=', ball.getBoundingClientRect().width / 2);
-         ballPosition.update();
+                 paddle1.style.left = paddlesPos.paddle1X + 'px';
+                 paddle1.style.top = paddlesPos.paddle1Y + 'px';
+                 paddle2.style.left = paddlesPos.paddle2X + 'px';
+                 paddle2.style.top = paddlesPos.paddle2Y + 'px';
+             },
+         }
+         paddlesPos.update();
+         var ballPos = {
+             ballX: field.getBoundingClientRect().left + field.getBoundingClientRect().width / 2 - ball.getBoundingClientRect().width / 2 - 1,
+             ballY: field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - ball.getBoundingClientRect().height / 2 - 1,
+             moveX : 0,
+             moveY : 0,
+             update: function () {
+                 ball.style.left = ballPos.ballX + 'px';
+                 ball.style.top = ballPos.ballY + 'px';
+             },
+         }         
+         ballPos.update();
+
+         function gameStart() {
+             ballPos.moveX = 4;
+             ballPos.moveY = 1;
+         }
+
          window.addEventListener("keydown", function (EO) {
              EO = EO || window.event;
              EO.preventDefault();
-             
+
              if (EO.keyCode === 17) {
-                 paddlesPosition.paddle_1Move = 1;
+                 paddlesPos.paddle1Move = 1;
              }
 
              if (EO.keyCode === 16) {
-                 paddlesPosition.paddle_1Move = -1;
+                 paddlesPos.paddle1Move = -1;
              }
 
              if (EO.keyCode === 40) {
-                 paddlesPosition.paddle_2Move = 5;
+                 paddlesPos.paddle2Move = 1;
              }
 
              if (EO.keyCode === 38) {
-                 paddlesPosition.paddle_2Move = -5;
+                 paddlesPos.paddle2Move = -1;
              }
          });
-         function gameStart() {
-             ballPosition.moveX = 4;
-             ballPosition.moveY = 1;
-
-         }
-         gameStart();
          window.addEventListener("keyup", function (EO) {
              EO = EO || window.event;
              EO.preventDefault();
-             
+
              if (EO.keyCode === 17) {
-                 paddlesPosition.paddle_1Move = 0;
+                 paddlesPos.paddle1Move = 0;
              }
 
              if (EO.keyCode === 16) {
-                 paddlesPosition.paddle_1Move = 0;
+                 paddlesPos.paddle1Move = 0;
              }
 
              if (EO.keyCode === 40) {
-                 paddlesPosition.paddle_2Move = 0;
+                 paddlesPos.paddle2Move = 0;
              }
 
              if (EO.keyCode === 38) {
-                 paddlesPosition.paddle_2Move = 0;
+                 paddlesPos.paddle2Move = 0;
              }
          });
+         function initPosition() {
+             message.innerHTML = "";
+             paddlesPos.paddle1X = field.getBoundingClientRect().left + 1;
+             paddlesPos.paddle1Y = field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - parseInt(paddle2.style.height) / 2 + 1;
+             paddlesPos.paddle2X = field.getBoundingClientRect().left + field.getBoundingClientRect().width - parseInt(paddle2.style.width) - 1;
+             paddlesPos.paddle2Y = field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - parseInt(paddle2.style.height) / 2 + 1;
+             ballPos.ballX = field.getBoundingClientRect().left + field.getBoundingClientRect().width / 2 - ball.getBoundingClientRect().width / 2 - 1;
+             ballPos.ballY = field.getBoundingClientRect().top + field.getBoundingClientRect().height / 2 - ball.getBoundingClientRect().height / 2 - 1;
+
+         }
          function game() {
-             paddlesPosition.update();
-             //paddlesPosition moving
-             (paddlesPosition.paddle_1Y <= field.getBoundingClientRect().top) ? paddlesPosition.paddle_1Y = field.getBoundingClientRect().top : paddlesPosition.paddle_1Y += paddlesPosition.paddle_1Move;
-             (paddlesPosition.paddle_1Y + paddlesPosition.height > field.getBoundingClientRect().bottom) ? paddlesPosition.paddle_1Y = field.getBoundingClientRect().bottom - paddlesPosition.height : paddlesPosition.paddle_1Y += paddlesPosition.paddle_1Move;
-             (paddlesPosition.paddle_2Y <= field.getBoundingClientRect().top - paddlesPosition.paddle_2Move) ? paddlesPosition.paddle_2Y = field.getBoundingClientRect().top : paddlesPosition.paddle_2Y += paddlesPosition.paddle_2Move;
-             (paddlesPosition.paddle_2Y + paddlesPosition.height > field.getBoundingClientRect().bottom) ? paddlesPosition.paddle_2Y = field.getBoundingClientRect().bottom - paddlesPosition.height : paddlesPosition.paddle_2Y += paddlesPosition.paddle_2Move;             
-             //ball moving
-             ballPosition.update();
-             ballPosition.ballX -= ballPosition.moveX;
-             //ballPosition.ballY -= ballPosition.moveY;             
-             if ((ballPosition.ballY < paddlesPosition.paddle_1Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_1Y) && (ballPosition.ballX <= paddlesPosition.paddle_1X + paddlesPosition.width)) {
-                 ballPosition.moveX = - ballPosition.moveX;
+             ballPos.update();
+             paddlesPos.update();
+             ballPos.ballX -= ballPos.moveX;
+             ballPos.ballY -= ballPos.moveY;
+
+             (paddlesPos.paddle1Y <= field.getBoundingClientRect().top) ? paddlesPos.paddle1Y = field.getBoundingClientRect().top : paddlesPos.paddle1Y += paddlesPos.paddle1Move;
+             (paddlesPos.paddle1Y + parseInt(paddle1.style.height) > field.getBoundingClientRect().bottom) ? paddlesPos.paddle1Y = field.getBoundingClientRect().bottom - parseInt(paddle1.style.height) : paddlesPos.paddle1Y += paddlesPos.paddle1Move;
+             (paddlesPos.paddle2Y <= field.getBoundingClientRect().top - paddlesPos.paddle2Move) ? paddlesPos.paddle2Y = field.getBoundingClientRect().top : paddlesPos.paddle2Y += paddlesPos.paddle2Move;
+             (paddlesPos.paddle2Y + parseInt(paddle1.style.height) > field.getBoundingClientRect().bottom) ? paddlesPos.paddle2Y = field.getBoundingClientRect().bottom - parseInt(paddle1.style.height) : paddlesPos.paddle2Y += paddlesPos.paddle2Move;
+
+             if (ballPos.ballX >= field.getBoundingClientRect().left + field.getBoundingClientRect().width - parseInt(ball.style.width)) {
+                 score2 += 1;
+                 scoreInnerHTML();
+                 ballPos.moveX = 0;
+                 ballPos.moveY = 0;
+                 message.innerHTML = messageText;
+                 ballPos.ballX = field.getBoundingClientRect().left + field.getBoundingClientRect().width - parseInt(ball.style.width) - 1;
+                 
+                 window.setTimeout(function () {                     
+                     initPosition();
+                     gameStart();
+                 }, 1500);
+                
+
              }
-             else if ((!(ballPosition.ballY < paddlesPosition.paddle_1Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_1Y) && (ballPosition.ballX <= field.getBoundingClientRect().left))) {
-                 console.log('ballX = ', ballPosition.ballX);
-                 console.log('border = ', field.getBoundingClientRect().left);
-                 debugger;
+             else if ((ballPos.ballY < paddlesPos.paddle1Y + parseInt(paddle1.style.height) && ballPos.ballY + parseInt(ball.style.height) > paddlesPos.paddle1Y) && (ballPos.ballX <= paddlesPos.paddle1X + parseInt(paddle1.style.width))) {
+                 ballPos.moveX = -ballPos.moveX;
+
              }
-             if ((ballPosition.ballY < paddlesPosition.paddle_2Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_2Y) && (ballPosition.ballX + ballPosition.width > paddlesPosition.paddle_2X)) {
-                 ballPosition.moveX = - ballPosition.moveX;
+             if (ballPos.ballX < field.getBoundingClientRect().left) {
+                 score1 += 1;
+                 scoreInnerHTML();
+                 ballPos.moveX = 0;
+                 ballPos.moveY = 0;
+                 message.innerHTML = messageText;
+                 ballPos.ballX = field.getBoundingClientRect().left + 1;
+
+                 window.setTimeout(function () {
+                     initPosition();
+                     gameStart();
+                 }, 1500);
+                 
              }
-             else if ((!(ballPosition.ballY < paddlesPosition.paddle_2Y + paddlesPosition.height && ballPosition.ballY + ballPosition.height > paddlesPosition.paddle_2Y) && (ballPosition.ballX + ballPosition.width > field.getBoundingClientRect().left + field.getBoundingClientRect().width))) {
-                 console.log('ballX = ', ballPosition.ballX + ballPosition.width);
-                 console.log('border = ', field.getBoundingClientRect().left + field.getBoundingClientRect().width);
-                 debugger;
+
+             else if ((ballPos.ballY < paddlesPos.paddle2Y + parseInt(paddle1.style.height) && ballPos.ballY + parseInt(ball.style.height) > paddlesPos.paddle2Y) && (ballPos.ballX + parseInt(ball.style.width) > paddlesPos.paddle2X)) {
+                 ballPos.moveX = -ballPos.moveX;
              }
-            //console.log('paddle = ', paddlesPosition.paddle_1Y + paddlesPosition.height);
-             //console.log('ball = ', ballPosition.ballY + ballPosition.height);
-             //console.log(field.getBoundingClientRect().left + field.getBoundingClientRect().width);
+             if (ballPos.ballY >= field.getBoundingClientRect().top + field.getBoundingClientRect().height - parseInt(ball.style.width) - 1) {
+                 ballPos.moveY = -ballPos.moveY;
+             }
+             if (ballPos.ballY < field.getBoundingClientRect().top + 1) {
+                 ballPos.moveY = -ballPos.moveY;
+             }             
+             paddlesPos.update();             
              requestAnimationFrame(game);
          }
-         //console.log(field.getBoundingClientRect().bottom);
-         
-         
+         requestAnimationFrame(game);
          
      </script>
 </body>
