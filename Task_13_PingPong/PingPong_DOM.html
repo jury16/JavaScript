@@ -114,8 +114,8 @@
         var ballPos = {
             ballX: fieldLeft + fieldWidth / 2 - ballDiam / 2 - 1,
             ballY: fieldTop + fieldHeight / 2 - ballDiam / 2 - 1,
-            moveX: 0,
-            moveY: 0,
+            speedX: 0,
+            speedY: 0,
             update: function () {
                 ball.style.left = ballPos.ballX + 'px';
                 ball.style.top = ballPos.ballY + 'px';
@@ -124,48 +124,44 @@
         ballPos.update();
 
         function gameStart() {
-            ballPos.moveX = 4;
-            ballPos.moveY = 1;
+            ballPos.speedX = 4;
+            ballPos.speedY = 1;
         }
 
         window.addEventListener("keydown", function (EO) {
             EO = EO || window.event;
             EO.preventDefault();
-
-            if (EO.keyCode === 17) {
-                paddlesPos.paddle1Speed = 1;
-            }
-
-            if (EO.keyCode === 16) {
-                paddlesPos.paddle1Speed = -1;
-            }
-
-            if (EO.keyCode === 40) {
-                paddlesPos.paddle2Speed = 1;
-            }
-
-            if (EO.keyCode === 38) {
-                paddlesPos.paddle2Speed = -1;
+            switch (EO.keyCode) {
+                case 17:
+                    paddlesPos.paddle1Speed = 1;
+                    break;
+                case 16:
+                    paddlesPos.paddle1Speed = -1;
+                    break;
+                case 40:
+                    paddlesPos.paddle2Speed = 1;
+                    break;
+                case 38:
+                    paddlesPos.paddle2Speed = -1;
+                    break;
             }
         });
         window.addEventListener("keyup", function (EO) {
             EO = EO || window.event;
             EO.preventDefault();
-
-            if (EO.keyCode === 17) {
-                paddlesPos.paddle1Speed = 0;
-            }
-
-            if (EO.keyCode === 16) {
-                paddlesPos.paddle1Speed = 0;
-            }
-
-            if (EO.keyCode === 40) {
-                paddlesPos.paddle2Speed = 0;
-            }
-
-            if (EO.keyCode === 38) {
-                paddlesPos.paddle2Speed = 0;
+            switch (EO.keyCode) {
+                case 17:
+                    paddlesPos.paddle1Speed = 0;
+                    break;
+                case 16:
+                    paddlesPos.paddle1Speed = 0;
+                    break;
+                case 40:
+                    paddlesPos.paddle2Speed = 0;
+                    break;
+                case 38:
+                    paddlesPos.paddle2Speed = 0;
+                    break;
             }
         });
         var count = 0;
@@ -182,28 +178,26 @@
         function game() {
             ballPos.update();
             paddlesPos.update();
-            ballPos.ballX -= ballPos.moveX;
-            ballPos.ballY -= ballPos.moveY;
+            ballPos.ballX -= ballPos.speedX;
+            ballPos.ballY -= ballPos.speedY;
 
 
-            function delay(nuberScore) {
+            function delay(nuberPaddle) {
                 message.innerHTML = messageText;
                 if (count < 50) {
-                    if (!flag && nuberScore == 1) {
+                    if (!flag && nuberPaddle == 1) {
                         score1 += 1;
-                        scoreInnerHTML();
                     }
-                    else if (!flag && nuberScore == 2) {
+                    else if (!flag && nuberPaddle == 2) {
                         score2 += 1;
-                        scoreInnerHTML();
                     }
+                    scoreInnerHTML();
                     flag = 1;
-                    ballPos.moveX = 0;
-                    ballPos.moveY = 0;
+                    ballPos.speedX = 0;
+                    ballPos.speedY = 0;
                     paddlesPos.paddle2Speed = 0;
                     paddlesPos.paddle1Speed = 0;
                     count += 1;
-
                 }
 
                 else if (count >= 50) {
@@ -221,12 +215,12 @@
             (paddlesPos.paddle2Y <= fieldTop - paddlesPos.paddle2Speed) ? paddlesPos.paddle2Y = fieldTop : paddlesPos.paddle2Y += paddlesPos.paddle2Speed;
             (paddlesPos.paddle2Y + paddleHeight > fieldBottom) ? paddlesPos.paddle2Y = fieldBottom - paddleHeight : paddlesPos.paddle2Y += paddlesPos.paddle2Speed;
 
-            if (ballPos.ballX >= fieldLeft + fieldWidth - ballDiam - 1) {
-                ballPos.ballX = fieldLeft + fieldWidth - ballDiam - 1;
+            if (ballPos.ballX >= fieldLeft + fieldWidth - ballDiam - 2) {
+
                 delay(2);
             }
             else if ((ballPos.ballY < paddlesPos.paddle1Y + paddleHeight && ballPos.ballY + ballDiam > paddlesPos.paddle1Y) && (ballPos.ballX <= paddlesPos.paddle1X + paddleWidth)) {
-                ballPos.moveX = -ballPos.moveX;
+                ballPos.speedX = -ballPos.speedX;
 
             }
             if (ballPos.ballX <= fieldLeft + 1) {
@@ -234,13 +228,13 @@
             }
 
             else if ((ballPos.ballY < paddlesPos.paddle2Y + paddleHeight && ballPos.ballY + ballDiam > paddlesPos.paddle2Y) && (ballPos.ballX + ballDiam > paddlesPos.paddle2X)) {
-                ballPos.moveX = -ballPos.moveX;
+                ballPos.speedX = -ballPos.speedX;
             }
             if (ballPos.ballY >= fieldTop + fieldHeight - ballDiam - 1) {
-                ballPos.moveY = -ballPos.moveY;
+                ballPos.speedY = -ballPos.speedY;
             }
             if (ballPos.ballY < fieldTop + 1) {
-                ballPos.moveY = -ballPos.moveY;
+                ballPos.speedY = -ballPos.speedY;
             }
             paddlesPos.update();
             requestAnimationFrame(game);
