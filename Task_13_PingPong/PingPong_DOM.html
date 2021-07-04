@@ -126,6 +126,8 @@
         function gameStart() {
             ballPos.speedX = 4;
             ballPos.speedY = 1;
+            initPosition();
+            flag = 0;
         }
 
         window.addEventListener("keydown", function (EO) {
@@ -184,30 +186,18 @@
 
             function delay(nuberPaddle) {
                 message.innerHTML = messageText;
-                if (count < 50) {
-                    if (!flag && nuberPaddle == 1) {
-                        score1 += 1;
-                    }
-                    else if (!flag && nuberPaddle == 2) {
-                        score2 += 1;
-                    }
-                    scoreInnerHTML();
-                    flag = 1;
-                    ballPos.speedX = 0;
-                    ballPos.speedY = 0;
-                    paddlesPos.paddle2Speed = 0;
-                    paddlesPos.paddle1Speed = 0;
-                    count += 1;
-                }
 
-                else if (count >= 50) {
-                    count = 0;
-                    flag = 0;
-                    initPosition();
-                    message.innerHTML = "";
-                    gameStart();
+                if (!flag && nuberPaddle == 1) { score1 += 1; }
+                else if (!flag && nuberPaddle == 2) { score2 += 1; }
+                scoreInnerHTML();
+                flag = 1;
+                ballPos.speedX = 0;
+                ballPos.speedY = 0;
+                paddlesPos.paddle2Speed = 0;
+                paddlesPos.paddle1Speed = 0;
+                message.innerHTML = "";
+                start.onclick = gameStart;
 
-                }
             }
 
             (paddlesPos.paddle1Y <= fieldTop) ? paddlesPos.paddle1Y = fieldTop : paddlesPos.paddle1Y += paddlesPos.paddle1Speed;
