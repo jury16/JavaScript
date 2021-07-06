@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PingPong_SVG</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        body {
+            margin: 50px;
+            padding: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="game">
+
+    </svg>
+    <script>
+        "use strict";
+        //create field
+        var wrapper = document.getElementById('game'),
+            wrapperWidth = 600,
+            wrapperHeight = 600,
+            paddleHeight = 0.15 * wrapperHeight,
+            paddleY = (wrapperHeight / 2 - paddleHeight / 2),
+            paddleWidth = 0.012 * wrapperHeight,
+            scoreWidth = 0.5 * wrapperWidth,
+            scoreHeight = 0.08 * wrapperHeight,
+            scoreTable,
+            score,
+            score1 = 0,
+            score2 = 0;
+        wrapper.style.width = wrapperWidth;
+        wrapper.style.height = wrapperHeight;
+        wrapper.style.position = 'relative';
+        document.body.append(wrapper);
+        //button
+        var start = document.createElement('input');
+        start.type = "button";
+        start.value = "start!";
+        start.style.position = 'absolute';
+        start.style.top = wrapperWidth * 0.2 + 'px';
+        start.style.left = '50px';
+        start.style.width = '60px';
+        document.body.appendChild(start);
+        start.onclick = gameStart;
+        var xmlns = 'http://www.w3.org/2000/svg';
+        var field = document.createElementNS(xmlns, 'polygon'),
+            fieldLeft = 1,
+            fieldRight = wrapperWidth - 1,
+            fieldTop = wrapperHeight * (1 - 0.83),
+            fieldBottom = wrapperHeight * 0.83,
+            fieldWidth = fieldRight - fieldLeft,
+            fieldHeight = fieldTop - fieldBottom;
+        field.setAttribute('points', `${fieldLeft},${fieldTop} ${fieldRight},${fieldTop} ${fieldRight},${fieldBottom} ${fieldLeft},${fieldBottom}`);
+        field.setAttribute('fill', 'yellow');
+        field.setAttribute('stroke', 'black');
+        wrapper.appendChild(field);
+        // create score
+        score = document.createElementNS(xmlns, "text");
+        score = wrapper.appendChild(score);
+        var scoreX = scoreWidth;
+        var scoreY = scoreHeight * 1.25;
+        createText(score, scoreX, scoreY, "middle", "central", 42);
+        function scoreInnerHTML() {
+            score.innerHTML = score1 + ":" + score2;
+        }
+        scoreInnerHTML()
+
+        //function to create text
+        function createText(name, x, y, textAnchor, dominantBaseline, fontSize, color) {
+            name.setAttribute("x", x);
+            name.setAttribute("y", y);
+            name.setAttribute("text-anchor", textAnchor);
+            name.setAttribute("dominant-baseline", dominantBaseline);
+            name.style.fontSize = fontSize;
+            name.style.fill = color;
+        }
+        // create message 'GOAL'
+        var message = document.createElementNS(xmlns, "text");
+        message = wrapper.appendChild(message);
+        var messageX = scoreWidth,
+            messageY = scoreHeight * 3.25,
+            messageText = 'GOAL!';
+        createText(message, messageX, messageY, "middle", "central", 65, 'red');
+        // create ball
+        var ball = document.createElementNS(xmlns, "circle"),
+            ballCenterX = (fieldLeft + fieldRight) / 2,
+            ballCenterY = (fieldTop + fieldBottom) / 2,
+            ballRadius = 0.025 * wrapperWidth,
+            ballColor = 'red';
+        wrapper.appendChild(ball);
+        ball.setAttribute("cx", ballCenterX);
+        ball.setAttribute("cy", ballCenterY);
+        ball.setAttribute("r", ballRadius);
+        ball.setAttribute("fill", ballColor);
+        //create paddles
+        var paddle1 = document.createElementNS(xmlns, "rect"),
+            paddle1X = 1,
+            paddle1Y = paddleY;
+        var paddle2 = document.createElementNS(xmlns, "rect"),
+            paddle2X = wrapperWidth - paddleWidth - 1,
+            paddle2Y = paddleY;
+
+        createStyles(paddle1, paddle1X, paddle1Y, paddleWidth, paddleHeight, 'blue');
+        createStyles(paddle2, paddle2X, paddle2Y, paddleWidth, paddleHeight, 'green');
+        wrapper.appendChild(paddle1);
+        wrapper.appendChild(paddle2);
+        //create paddles styles
+        function createStyles(name, x, y, width, height, color) {
+            name.setAttribute("x", x);
+            name.setAttribute("y", y);
+            name.setAttribute("width", width);
+            name.setAttribute("height", height);
+            name.setAttribute("fill", color);
+        }
+
+        //paddles positions
+
+        let paddlesPos = {
+            paddle1X: paddle1X,
+            paddle1Y: paddle1Y,
+            paddle2X: paddle2X,
+            paddle2Y: paddle2Y,
+            paddle1Speed: 0,
+            paddle2Speed: 0,
+            update: function () {
+                paddle1.style.x = paddlesPos.paddle1X;
+                paddle1.style.y = paddlesPos.paddle1Y;
+                paddle2.style.x = paddlesPos.paddle2X;
+                paddle2.style.y = paddlesPos.paddle2Y;
+            },
+        }
+        paddlesPos.update();
+
+        //ball position
+        var ballPos = {
+            ballX: ballCenterX,
+            ballY: ballCenterY,
+            speedX: 0,
+            speedY: 0,
+            update: function () {
+                ball.style.cx = ballPos.ballX;
+                ball.style.cy = ballPos.ballY;
+            },
+        }
+        ballPos.update();
+        //game Start
+        function gameStart() {
+            ballPos.speedX = 4;
+            ballPos.speedY = 1;
+            initPosition();
+            flag = 0;
+        }
+        //listen keys
+        window.addEventListener("keydown", function (EO) {
+            EO = EO || window.event;
+            EO.preventDefault();
+            switch (EO.keyCode) {
+                case 17:
+                    paddlesPos.paddle1Speed = 1;
+                    break;
+                case 16:
+                    paddlesPos.paddle1Speed = -1;
+                    break;
+                case 40:
+                    paddlesPos.paddle2Speed = 1;
+                    break;
+                case 38:
+                    paddlesPos.paddle2Speed = -1;
+                    break;
+            }
+        });
+        window.addEventListener("keyup", function (EO) {
+            EO = EO || window.event;
+            EO.preventDefault();
+            switch (EO.keyCode) {
+                case 17:
+                    paddlesPos.paddle1Speed = 0;
+                    break;
+                case 16:
+                    paddlesPos.paddle1Speed = 0;
+                    break;
+                case 40:
+                    paddlesPos.paddle2Speed = 0;
+                    break;
+                case 38:
+                    paddlesPos.paddle2Speed = 0;
+                    break;
+            }
+        });
+        var count = 0;
+        var flag = 0;
+        function initPosition() {
+            message.innerHTML = "";
+            paddlesPos.paddle1X = 1;
+            paddlesPos.paddle1Y = paddleY;
+            paddlesPos.paddle2X = wrapperWidth - paddleWidth - 1;
+            paddlesPos.paddle2Y = paddleY;
+            ballPos.ballX = ballCenterX;
+            ballPos.ballY = ballCenterY;
+        }
+        //game
+        function game() {
+            paddlesPos.update();
+            ballPos.update();
+            ballPos.ballX += ballPos.speedX;
+            ballPos.ballY += ballPos.speedY;
+            //console.log(ballPos.speedY);
+            function delay(nuberPaddle) {
+                message.innerHTML = messageText;
+                if (!flag && nuberPaddle == 1) { score1 += 1; }
+                else if (!flag && nuberPaddle == 2) { score2 += 1; }
+                scoreInnerHTML();
+                flag = 1;
+                ballPos.speedX = 0;
+                ballPos.speedY = 0;
+                paddlesPos.paddle2Speed = 0;
+                paddlesPos.paddle1Speed = 0;
+                start.onclick = gameStart;
+
+            }
+
+            (paddlesPos.paddle1Y <= fieldTop) ? paddlesPos.paddle1Y = fieldTop : paddlesPos.paddle1Y += paddlesPos.paddle1Speed;
+            (paddlesPos.paddle1Y + paddleHeight > fieldBottom) ? paddlesPos.paddle1Y = fieldBottom - paddleHeight : paddlesPos.paddle1Y += paddlesPos.paddle1Speed;
+            (paddlesPos.paddle2Y <= fieldTop - paddlesPos.paddle2Speed) ? paddlesPos.paddle2Y = fieldTop : paddlesPos.paddle2Y += paddlesPos.paddle2Speed;
+            (paddlesPos.paddle2Y + paddleHeight > fieldBottom) ? paddlesPos.paddle2Y = fieldBottom - paddleHeight : paddlesPos.paddle2Y += paddlesPos.paddle2Speed;
+
+            if (ballPos.ballX + ballRadius >= fieldRight - 1) {
+                delay(2);
+            }
+            else if ((ballPos.ballY - ballRadius < paddlesPos.paddle1Y + paddleHeight && ballPos.ballY + ballRadius > paddlesPos.paddle1Y) && (ballPos.ballX - ballRadius <= paddlesPos.paddle1X + paddleWidth)) {
+                ballPos.speedX = -ballPos.speedX;
+            }
+            if (ballPos.ballX - ballRadius <= fieldLeft + 1) {
+                delay(1);
+            }
+
+            else if ((ballPos.ballY - ballRadius < paddlesPos.paddle2Y + paddleHeight && ballPos.ballY + ballRadius > paddlesPos.paddle2Y) && (ballPos.ballX + ballRadius > paddlesPos.paddle2X)) {
+                ballPos.speedX = -ballPos.speedX;
+            }
+            if ((ballPos.ballY >= fieldBottom - ballRadius - 1) || (ballPos.ballY < fieldTop + ballRadius + 1)) {
+                ballPos.speedY = -ballPos.speedY;
+            }
+
+            requestAnimationFrame(game);
+        }
+        requestAnimationFrame(game);
+
+
+
+    </script>
+</body>
+</html>
