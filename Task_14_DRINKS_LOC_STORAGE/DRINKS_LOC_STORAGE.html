@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DRINKS_LOC_STORAGE</title>
+    <style>
+        body{
+            display: flex;
+
+        }
+        div {
+            margin: 50px;
+        }
+        .articles {
+            max-height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        a {
+            display: inline-block;
+            width: 250px;
+            background-color: lightgrey;
+            border-radius: 10px;
+            color: white;
+            padding: 1em 1.5em;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            color: black;
+        }
+
+            a:hover {
+                background-color: red;
+                color: white;
+            }
+
+            a:active {
+                transform: scale(1.1,1.1);
+            }
+    </style>
+</head>
+
+<body>
+    <div class="articles">
+        <div>
+            <a href="#" onclick="setDrink()">ввод информации о напитке</a>
+        </div>
+        <div>
+            <a href="#" onclick="getDrink()">получение информации о напитке</a>
+        </div>
+        <div>
+            <a href="#" onclick="deleteDrink()">удаление информации о напитке</a>
+        </div>
+        <div>
+            <a href="#" onclick="listDrink()">перечень всех напитков</a>
+        </div>
+    </div>
+    <div class="articles">
+        <div>
+            <a href="#" onclick="setDish()">ввод информации о блюде</a>
+        </div>
+        <div>
+            <a href="#" onclick="getDish()">получение информации о блюде</a>
+        </div>
+        <div>
+            <a href="#" onclick="deleteDish()">удаление информации о блюде</a>
+        </div>
+        <div>
+            <a href="#" onclick="listDish()">перечень всех блюд</a>
+        </div>
+    </div>
+   
+    <script src="LocStorage.js"></script>
+    <script>
+        "use strict";
+        let drinkStorage = new LocStorage("Drink");
+        let dishStorage = new LocStorage("Dish");
+
+        function setDrink() {
+            const drinkName = checkName(prompt('Введите название напитка: '));
+            var alco = confirm('напиток алкогольный?') ? "да" : "нет";
+            var ingridients = [];
+            var recipe = {};
+            var ingr = prompt('Введите ингридиент напитка: ');
+            while (!ingr) {
+                ingr = prompt('В напитке должен быть минимум один ингридиент. Введите ингридиент напитка: ');
+            }
+            ingridients.push(ingr);
+            while (ingr) {
+                ingr = prompt('Введите следующий ингридиент напитка\nили \'CANCEL\' либо \'ENTER\' для окончания ввода): ');
+                if (ingr) { ingridients.push(ingr) };
+            }
+            recipe = { 'алкогольный': alco, 'рецепт': ingridients };
+            drinkStorage.addValue(drinkName, recipe);
+            drinkStorage.store();
+        }
+        function getDrink() {
+            var drinkName = checkName(prompt('Введите название напитка: '));
+            var nameGetted = drinkStorage.getValue(drinkName);
+            if (nameGetted === undefined) {
+                alert(`напиток с названием ${drinkName} не найден`);
+            }
+            else {
+                alert(`напиток ${drinkName}\nалкогольный: ${nameGetted['алкогольный']}\nрецепт: ${nameGetted['рецепт'].join(', ')}`);
+            }
+        }
+        function deleteDrink() {
+            var drinkName = checkName(prompt('Введите название напитка, который Вы хотите удалить: '));
+            var deletingDrink = drinkStorage.deleteValue(drinkName);
+            if (deletingDrink) {
+                alert(`напиток ${drinkName} удален`);
+                drinkStorage.store();
+            }
+            else alert(`напиток ${drinkName} не найден`);
+        }
+        function listDrink() {
+            var listOfDrinks = drinkStorage.getKeys()
+            alert(`Перечень напитков:\n${listOfDrinks.join('\n')}`);
+        }
+        var checkName = (name) => {
+            while (!(name)) {
+                name = prompt(`Название напитка не может быть пустым. Введите название напитка: `);
+            }
+            return name;
+        }
+        function setDish() {
+            const DishName = checkName(prompt('Введите название блюда: '));
+            var vegan = confirm('блюдо вегетарианское?') ? "да" : "нет";
+            var ingridients = [];
+            var recipe = {};
+            var ingr = prompt('Введите ингридиент блюда: ');
+            while (!ingr) {
+                ingr = prompt('В блюде должен быть минимум один ингридиент. Введите ингридиент блюда: ');
+            }
+            ingridients.push(ingr);
+            while (ingr) {
+                ingr = prompt('Введите следующий ингридиент блюда\nили \'CANCEL\' либо \'ENTER\' для окончания ввода): ');
+                if (ingr) { ingridients.push(ingr) };
+            }
+            recipe = { 'вегатарианское': vegan, 'рецепт': ingridients };
+            dishStorage.addValue(DishName, recipe);
+            dishStorage.store();
+        }
+        function getDish() {
+            var DishName = checkName(prompt('Введите название блюда: '));
+            var nameGetted = dishStorage.getValue(DishName);
+            if (nameGetted === undefined) {
+                alert(`блюдо с названием ${DishName} не найден`);
+            }
+            else {
+                alert(`блюдо ${DishName}\nвегатарианское: ${nameGetted['вегатарианское']}\nрецепт: ${nameGetted['рецепт'].join(', ')}`);
+            }
+        }
+        function deleteDish() {
+            var DishName = checkName(prompt('Введите название блюда, который Вы хотите удалить: '));
+            var deletingDish = dishStorage.deleteValue(DishName);
+            if (deletingDish) {
+                alert(`блюдо ${DishName} удалено`);
+                dishStorage.store();
+            }
+            else alert(`блюдо ${DishName} не найдено`);
+        }
+        function listDish() {
+            var listOfDishs = dishStorage.getKeys()
+            alert(`Перечень блюд:\n${listOfDishs.join('\n')}`);
+        }
+
+    </script>
+</body>
+
+</html>
