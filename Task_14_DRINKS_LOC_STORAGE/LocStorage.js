@@ -9,7 +9,7 @@ function LocStorage(name) {
     }
     self.addValue = (key, value) => {
         self.list[key] = value;
-        drinkStorage.store();
+        self.store();
     }
     self.getValue = (key) => {
         return (key in self.list) ? self.list[key] : undefined;
@@ -17,7 +17,7 @@ function LocStorage(name) {
     self.deleteValue = (key) => {
         if (key in self.list) {
             delete self.list[key];
-            drinkStorage.store();
+            self.store();
             return true;
         }
         return false;
