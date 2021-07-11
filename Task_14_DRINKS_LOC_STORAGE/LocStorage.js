@@ -5,15 +5,19 @@ function LocStorage(name) {
     self.list = {};
 
     if (localStorage.getItem(name)) {
-        name == "Dish" ? self.list = JSON.parse(localStorage.Dish) : self.list = JSON.parse(localStorage.Drink);
+        self.list = JSON.parse(localStorage[name]);
     }
-    self.addValue = (key, value) => self.list[key] = value;
+    self.addValue = (key, value) => {
+        self.list[key] = value;
+        drinkStorage.store();
+    }
     self.getValue = (key) => {
         return (key in self.list) ? self.list[key] : undefined;
     }
     self.deleteValue = (key) => {
         if (key in self.list) {
             delete self.list[key];
+            drinkStorage.store();
             return true;
         }
         return false;

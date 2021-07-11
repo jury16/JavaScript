@@ -12,7 +12,8 @@
         div {
             margin: 50px;
         }
-        .articles {            
+        .articles {
+            max-height: 30%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -94,7 +95,6 @@
             }
             recipe = { 'алкогольный': alco, 'рецепт': ingridients };
             drinkStorage.addValue(drinkName, recipe);
-            drinkStorage.store();
         }
         function getDrink() {
             var drinkName = checkName(prompt('Введите название напитка: '));
@@ -111,7 +111,6 @@
             var deletingDrink = drinkStorage.deleteValue(drinkName);
             if (deletingDrink) {
                 alert(`напиток ${drinkName} удален`);
-                drinkStorage.store();
             }
             else alert(`напиток ${drinkName} не найден`);
         }
@@ -141,7 +140,6 @@
             }
             recipe = { 'вегатарианское': vegan, 'рецепт': ingridients };
             dishStorage.addValue(DishName, recipe);
-            dishStorage.store();
         }
         function getDish() {
             var DishName = checkName(prompt('Введите название блюда: '));
@@ -158,7 +156,6 @@
             var deletingDish = dishStorage.deleteValue(DishName);
             if (deletingDish) {
                 alert(`блюдо ${DishName} удалено`);
-                dishStorage.store();
             }
             else alert(`блюдо ${DishName} не найдено`);
         }
