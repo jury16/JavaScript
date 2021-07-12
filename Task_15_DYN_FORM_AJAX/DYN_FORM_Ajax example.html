@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>example_trying</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div>
+        <form method=post action='https://form.it-academy.by/TestForm.php' name='form_1'></form>
+    </div>
+    <div>
+        <form method=post action='https://form.it-academy.by/TestForm.php' name='form_2'></form>
+    </div>
+    <script src='http://fe.it-academy.by/JQ/jquery.js'></script>
+    <script>
+
+        "use strict";
+        var a = document.getElementsByTagName('div');
+        var ajaxHandlerScript = "https://fe.it-academy.by/AjaxStringStorage2.php";
+
+        function testLoadScript() {
+            $.ajax("https://github.com/jury16/JavaScript-IT-Academy/blob/main/Task_15_DYN_FORM_AJAX/formDef1.json",
+                { type: 'GET', dataType: 'json', success: dataLoaded, error: errorHandler }
+            );
+        }
+
+        function dataLoaded(data) {
+            console.log('загруженные через AJAX данные:');
+            console.log(data);
+        }
+
+        function errorHandler(jqXHR, statusStr, errorStr) {
+            alert(statusStr + ' ' + errorStr);
+        }
+        testLoadScript()
+        
+    </script>
+</body>
+
+</html>
