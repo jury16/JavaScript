@@ -1,0 +1,3 @@
+Find the error in the function of finding the roots of a quadratic equation (see slides on the topic
+"Tests").
+Improve the function so that the tests are successful.
