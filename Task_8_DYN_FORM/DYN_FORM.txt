@@ -1,0 +1,7 @@
+Create project DYN_FORM. Develop a function that in the tag passed to it
+<form> dynamically builds form elements from the array passed to it.
+Call this function twice with the following arrays so that it builds on the web
+page two forms according to the samples below. Exact appearance matching
+it is not necessary for the samples to achieve forms.
+As a script that processes form data (the action attribute of the form tag), you can
+specify https://fe.it-academy.by/TestForm.php
