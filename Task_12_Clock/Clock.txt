@@ -1,0 +1,11 @@
+Create project CLOCK_DOM. Implement DOM methods to show the current
+time and clock running in real time according to the layout below.
+Clock digits are not hardcoded, create them and calculate their positions in the cycle.
+Do not use any "magic constants" in the code - move all constants into
+the beginning of a script with clear documentation.
+
+Implement clock (CLOCK_SVG project) using SVG.
+Description - in the homework about the CLOCK_DOM project.
+
+Implement a clock (CLOCK_CANVAS project) using Canvas.
+Description - in the homework about the CLOCK_DOM project.
