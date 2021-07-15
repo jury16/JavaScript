@@ -1,0 +1,40 @@
+Create project DRINKS_HASH_FUNC.
+one.
+Develop a HashStorageFunc class in a functional style (i.e. a function-
+constructor) to store arbitrary key-value pairs in the hash.
+The key can be any string; the value can be of any type, including
+vector (hash, array, etc.)
+The class must have the following interface (i.e., have the following public methods):
+addValue (key, value) - stores the specified value under the specified key;
+getValue (key) - returns the value for the specified key or undefined;
+deleteValue (key) - deletes the value with the specified key, returns true if
+the value has been removed and false if there was no such value in the store;
+getKeys () - returns an array consisting of some keys.
+The class must be clean (must not use any global variables,
+no, should "dirty the screen").
+The class must be generic, i.e. do not depend on the structure of the stored data,
+nor on the method of their subsequent use (including should not contain any links
+to the DOM, because can be used without a web page at all).
+2.
+Create a drinkStorage object of the HashStorageFunc class to store drink recipes.
+The key is the name of the drink; value - information about the drink (alcoholic
+drink or not, recipe line, etc. optional).
+3.
+To develop a web page for working with a repository of recipes for drinks.
+There should be buttons on the page:
+"Enter information about the drink" - sequentially asks for the name of the drink,
+alcoholic or not, the recipe for its preparation; stores information about
+drink in storage.
+"Getting information about the drink" - asks for the name of the drink and gives
+(to the page, to the console or to the alert) or information about it (according to the example given
+below), or a message about the absence of such a drink in the storage.
+"Delete information about the drink" - asks for the name of the drink and deletes it
+from the repository (if it is there) with the issuance of the corresponding message to
+information window.
+"List of all drinks" - displays in the information window a list of all
+drinks from the store (names only).
+Example of beverage information:
+drink margarita
+alcoholic: yes
+recipe:
+product, product ... mix ...
