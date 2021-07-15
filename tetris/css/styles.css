@@ -1,0 +1,47 @@
+html, body {
+    height: 100%;
+    background: black;
+}
+    .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40vh;
+    height: 75vh;
+}
+    .visible div:first-child {
+        border: 1px solid white;
+    }
+    a {
+    display: inline-block;
+    width: 108px;
+    background-color: lightgrey;
+    
+    color: white;
+    padding: 1em 1.5em;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    color: black;
+    border-width: 0;
+}
+
+        a:hover {
+            background-color: grey;
+            color: white;
+        }
+
+    a:active {
+        transform: scale(1.05,1.05);
+    }
+    canvas{
+        
+
+    }

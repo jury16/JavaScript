@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.4/mobile-detect.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div class="wrapper" id="wrapper">
+        <div class="visible" id="visible">
+            <div id="canvas">
+                <canvas class="game" id="game"></canvas>
+            </div>
+            <div id="infoCanvas">
+                <canvas id="info"></canvas>
+            </div>
+        </div>
+        <div class="buttons" id="buttons">
+            <div>
+                <div class="left">
+                    <canvas id="left"></canvas>
+                </div>
+                
+                <div class="right">
+                    <canvas id="right"></canvas>
+                </div>
+                
+            </div>
+            <div>
+                <div class="down">
+                    <canvas id="down"></canvas>
+                </div>
+                
+                <div class="rotate">
+                    <canvas id="rotate"></canvas>
+                </div>
+                
+            </div>
+         </div>
+    </div>
+
+
+    <script src="js/game.js"></script>
+   
+</body>
+
+</html>
