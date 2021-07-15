@@ -1,0 +1,5 @@
+Write a deepComp function to deeply compare the values passed to it.
+Values can be numbers, strings, booleans, hashes, null, undefined, arrays, incl. any level of investment.
+Note that the for..in loop does not guarantee that the hash keys will be iterated over in any order.
+Don't use Object.is ().
+Write tests for the function to work correctly

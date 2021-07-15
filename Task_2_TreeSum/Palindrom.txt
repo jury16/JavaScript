@@ -1,0 +1,10 @@
+Write a clean function that checks that the phrase passed to it is a palindrome.
+(A palindrome is a phrase that reads from left to right the same way as from right to left)
+Do not use arrays in the decision.
+The check should ignore:
+  - case of letters;
+  - spaces;
+  - punctuation marks;
+  - soft and hard signs;
+  - the difference between the letters "e" and "e".
+Ask the user for a string. Display the message "this is a palindrome" or "this is not a palindrome" via alert.

@@ -1,0 +1,3 @@
+Write a function deepCopy to deep copy the value passed to it.
+The function should receive a number, string, boolean, null, undefined, hash or array and return a copy of it, including all subhashes, subarrays, etc.
+Write tests for the function to work correctly

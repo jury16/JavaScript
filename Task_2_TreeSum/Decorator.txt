@@ -1,0 +1,12 @@
+Write a function to wrap text in a tag with attributes that you could work with in the following style:
+  var wrapP = buildWrapper ("P"); // build a function to wrap text in a P tag
+  console.log (wrapP ("Once upon a cold winter season"));
+  // the console displays the line "<P> Once in a cold winter time </P>"
+  console.log (wrapP ("Once upon a cold winter time", {lang: "ru"}));
+  // the console displays the line "<P lang = 'ru'> Once upon a cold winter time </P>"
+The function should take into account that some characters must be replaced with HTML mnemonics (namely, the characters <> '"&):
+  console.log (wrapP ("Once upon a cold winter season"));
+  // the console displays the line "<P> Once in & lt; cold & gt; winter time </P>"
+  var wrapH1 = buildWrapper ("H1"); // build a function for wrapping text in an H1 tag
+  console.log (wrapH1 ("VERSES", {align: "center", title: "M & M's"}));
+  // the console displays the line "<H1 align = 'center' title = 'M & amp; M & apos; s'> VERSES </H1>"

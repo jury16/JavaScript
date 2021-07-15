@@ -1,0 +1,9 @@
+Write a clean function that checks that the phrase passed to it is a palindrome using recursion.
+Do not use arrays in the decision.
+The check should ignore:
+  - case of letters;
+  - spaces;
+  - punctuation marks;
+  - soft and hard signs;
+  - the difference between the letters "e" and "e".
+Attention: it is not necessary to clear the string of ignored characters using recursion; recursion should only be used when checking if a cleared string is a palindrome.
