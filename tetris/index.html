@@ -14,35 +14,62 @@
 <body>
     <div class="wrapper" id="wrapper">
         <div class="visible" id="visible">
-            <div id="canvas">
-                <canvas class="game" id="game"></canvas>
+            <div>
+                <div id="canvas">
+                    <canvas class="game" id="game"></canvas>
+                </div>
+                <div class="optionsBlock" id="optionsBlock">
+                    <canvas id="optionsInfoBlock"></canvas>
+                </div>
             </div>
-            <div id="infoCanvas">
-                <canvas id="info"></canvas>
+            
+            <div class="gameInfo">
+                <div id="menu">
+                    <ul>
+                        <li >
+                            <a id="newGame" href="#" onclick="gameStart()">NEW GAME</a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="options()">OPTIONS</a>
+                        </li>
+                        <li>
+                            <a id="pause" href="#" onclick="pause1()">PAUSE</a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="infoCanvas">
+                    <canvas id="info"></canvas>
+                </div>
             </div>
+           
+            <div class="buttons" id="buttons">
+                <div id="1">
+                    <div class="left">
+                        <canvas id="left"></canvas>
+                    </div>
+
+                    <div class="right">
+                        <canvas id="rotate"></canvas>
+                    </div>
+
+                </div>
+
+                <div id="2">
+                    <div class="down">
+                        <canvas id="right"></canvas>
+                    </div>
+
+                    <div class="rotate">
+                        <canvas id="down"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="buttons" id="buttons">
-            <div>
-                <div class="left">
-                    <canvas id="left"></canvas>
-                </div>
-                
-                <div class="right">
-                    <canvas id="right"></canvas>
-                </div>
-                
-            </div>
-            <div>
-                <div class="down">
-                    <canvas id="down"></canvas>
-                </div>
-                
-                <div class="rotate">
-                    <canvas id="rotate"></canvas>
-                </div>
-                
-            </div>
-         </div>
+
+    
     </div>
 
 
