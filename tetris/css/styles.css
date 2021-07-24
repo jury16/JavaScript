@@ -1,7 +1,19 @@
+
 html, body {
     height: 98vh;
     background: black;
+    margin: 0;
+
 }
+ul{
+    margin: 10px;
+    padding: 0px;
+}
+p{
+    margin: 10px;
+    padding: 0px;
+}
+
     .wrapper {
     height: 100%;
     display: flex;
@@ -15,42 +27,65 @@ html, body {
     justify-content: center;
     width: 40vh;
     height: 70vh;
+    position: absolute;
+    z-index: 1;
 }
 #canvas{
         border: 1px solid white;
+        background-color: black;
     }
+
+.rotateDisplay {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.messageRotateInfo {
+
+}
 a {
     display: block;
-    width: 0.3vh;
+    width: 8.3vh;
     line-height: 6.0vh;
     background-color: lightgrey;
-    color: white;
     text-decoration: none;
     text-align: center;
     text-transform: uppercase;
+    color: black;
     border-width: 0;
 }
-.gameInfo {
-    height: 100%;
+.gameInfo, {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    align-self: flex-start;
+    justify-content: start;
 }
-#menu {
+
+.startGame {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    color: white;
-    flex-grow: 1;
+    flex-direction: column;
 }
-.optionsBlock{
-    isplay: none;
-    position: absolute;
-    order: 1px solid white;
-    top: -47vh;
+.menuList {
+    display: flex;
+    flex-direction: column;
+}
+.menuIcon{
+    display: none;
+}
+.menuList li {
+    margin: 0px 10px 0px 0px;
+}
+.newGameBlock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 li {
     display: block;
@@ -58,30 +93,35 @@ li {
     padding-bottom: 3vh;
 }
     li a {
-        display: block;
-        width: 22vh;
-        line-height: 6.0vh;
-        background-color: lightgrey;
-        color: white;
-        text-decoration: none;
-        text-align: center;
-        text-transform: uppercase;
+        width: 28vh;
     }
-    li a:hover {
+a:hover {
         background-color: grey;
         color: white;
     }
- li   a:active {
-        transform: scale(1.05,1.05);
+a:active {
+        transform: scale(1.1,1.1);
     }
 
 .buttons {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: row;
     order: 3;
 }
+    .buttons a {
+        width: 16vh;
+        border: 1px solid grey;
+    }
+.buttons a:hover {
+    background-color: lightgrey;
+    color: black;
+}
+        .buttons a:active {
+            transform: scale(1,1);
+            background-color: dimgrey;
+        }
 
 
 .buttons canvas {
@@ -91,3 +131,73 @@ li {
     order: 2;
     flex-grow: 1;
 }
+@media(min-width: 751px) {
+    .menuList{
+        display: flex;
+        align-items: center;
+    }
+    
+
+}
+    @media(max-width: 749px) {
+        .menuIcon {
+            z-index: 5;
+            display: block;
+            position: relative;
+            width: 40px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+            .menuIcon span,
+            .menuIcon::before,
+            .menuIcon::after {
+                left: 0vh;
+                top: -2vh;
+                position: absolute;
+                height: 10%;
+                width: 100%;
+                
+                transition: all 0.3s ease 0s;
+                background-color: white;
+            }
+
+            .menuIcon::before,
+            .menuIcon::after {
+                content: "";
+            }
+
+            .menuIcon::before {
+                top: 5vh;
+                left: -15vw;
+            }
+
+            .menuIcon::after {
+                top: 6.5vh;
+                left: -15vw;
+            }
+
+            .menuIcon span {
+                top: 5.8vh;
+                left: -15vw;
+                transform: scale(1) translate(0px, -50%);
+            }
+
+        .menuBody {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 100px 10px 10px 10px;
+            transform: translate(0px, -100%);
+            /transition: all 0.3s ease 0s;
+        }
+        .menuBody._active{
+            //transform: translate(0px, 0px);
+        }
+        .menuList li {
+            margin: 0px 0px 0px 0px;
+        }
+    }
