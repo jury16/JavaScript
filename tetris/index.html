@@ -14,53 +14,61 @@
 <body>
     <div class="wrapper" id="wrapper">
         <div class="visible" id="visible">
-            <div>
+            <div id="canvasOptionsBlock">
                 <div id="canvas">
                     <canvas class="game" id="game"></canvas>
                 </div>
                 <div class="optionsBlock" id="optionsBlock">
-                    <canvas id="optionsInfoBlock"></canvas>
+                </div>
+                <div class="newGameBlock" id="newGameBlock">
                 </div>
             </div>
-            
-            <div class="gameInfo">
-                <div id="menu">
-                    <ul>
-                        <li >
-                            <a id="newGame" href="#" onclick="gameStart()">NEW GAME</a>
-                        </li>
-                        <li>
-                            <a href="#" onclick="options()">OPTIONS</a>
-                        </li>
-                        <li>
-                            <a id="pause" href="#" onclick="pause1()">PAUSE</a>
-                        </li>
-                    </ul>
+
+            <div class="gameInfo" id="gameInfo">
+                <div class="optionsBody">
+                    <div class="menuIcon" id="menuIcon">
+                        <span></span>
+                    </div>
+                    <!--<nav class="menuBody _active" id="menu">-->
+                    <nav class="menuBody" id="menuBody">
+                        <ul class="menuList">
+                            <li>
+                                <a class="menuLink" id="newGame" href="#" onclick="newGames()">NEW GAME</a>
+                            </li>
+                            <li>
+                                <a class="menuLink" href="#" onclick="options()">OPTIONS</a>
+                            </li>
+                            <li>
+                                <a class="menuLink" id="pause" href="#" onclick="pause1()">PAUSE</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <div id="infoCanvas">
-                    <canvas id="info"></canvas>
+
+                <div id="statistique">
+
                 </div>
             </div>
-           
+
             <div class="buttons" id="buttons">
                 <div id="1">
                     <div class="left">
-                        <canvas id="left"></canvas>
+                        <a class="" id="left" href="#">left</a>
                     </div>
 
                     <div class="right">
-                        <canvas id="rotate"></canvas>
+                        <a class="" id="rotate" href="#">rotate</a>
                     </div>
 
                 </div>
 
                 <div id="2">
                     <div class="down">
-                        <canvas id="right"></canvas>
+                        <a class="" id="right" href="#">right</a>
                     </div>
 
                     <div class="rotate">
-                        <canvas id="down"></canvas>
+                        <a class="" id="down" href="#">down</a>
                     </div>
 
                 </div>
@@ -69,12 +77,13 @@
 
         </div>
 
-    
+        
     </div>
+    <div class="rotateDisplay" id="rotateDisplay"></div>
 
 
     <script src="js/game.js"></script>
-   
+
 </body>
 
 </html>
