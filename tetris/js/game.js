@@ -3,6 +3,7 @@
 const canvas = document.getElementById('game'),
     menu = document.getElementById('menuBody'),
     iconMenu = document.getElementById('menuIcon'),
+    namePlayerInput = document.getElementById('namePlayeR'),
     commun = document.getElementById('canvasOptionsBlock'),
     gameCanvas = document.getElementById('canvas'),
     statistique = document.getElementById('statistique'),
@@ -12,8 +13,11 @@ const canvas = document.getElementById('game'),
     menuOptions = document.getElementById('optionsBlock'),
     newGameBlock = document.getElementById('newGameBlock'),
     newGame = document.getElementById('newGame'),
+    recordsBlock = document.getElementById('recordsBlocks'),
     textOptions = document.createElement('p'),
     infoGame = document.createElement('p'),
+    recordsMess = document.createElement('p'),
+    blockStartGame = document.getElementById('blockStartGame'),
     pauseGame = document.getElementById('pause'),
     wrapper = document.getElementById('wrapper'),
     visible = document.getElementById('visible'),
@@ -31,14 +35,26 @@ var playAnimation = null,
     playZone = [], //array play zone (canvasWidth / grid) X (canvasHeight / grid)
     score = 0,
     record = 0,
+    target = {},
+    audioClick = new Audio('sounds/button.mp3'),
+    audioMouve = new Audio('sounds/mouve.mp3'),
+    audioBoom = new Audio('sounds/boom.mp3'),
+    audiogameOver = new Audio('sounds/gameOver.mp3'),
     pauseFlag = false,
     optionsFlag = false,
     newGamesFlag = false,
     rotateFlag = false,
+    recordsFlag = false,
+    gameFlag = true,
+    recordsPlayers,
+    result,
+    messageRecords = '',
     zoomGame = 1.2,
+    positionMessagesLeft,
+    positionMessagesTop,
     level = 1,
     bestPlayer = '',
-    namePlayer = "Vasia",
+    namePlayer = "",
     count = 0,
     textFont = '',
     canvasWidth ,
@@ -56,7 +72,7 @@ var playAnimation = null,
 checkScreenWidth = document.body.clientWidth;
 checkScreenHeight = document.body.clientHeight;
 menuOptions.appendChild(textOptions);
-console.log(canvas.getBoundingClientRect().left);
+recordsBlock.appendChild(recordsMess);
 
 statistique.appendChild(infoGame);
 // make gabarits canvas depending on the screen
@@ -74,21 +90,68 @@ function gabarits(width) {
         infoRecordY = 0.12 * canvasHeight;
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
-    menuOptions.style.opacity = '0';
-    newGameBlock.style.opacity = '0';
-    buttons.style.width = width + 'px';
-
+    buttonRight.style.width = width / 2 + 2 +'px';
+    buttonLeft.style.width = width / 2 + 2 + 'px';
+    rotateDisplay.style.display = 'none';
 }
+//check if mobile device and landscape screen
+function deviceType() {
+   
+    const ua = navigator.userAgent;
+    ((/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) ||
+        (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua))) ? mobileDevice = true : mobileDevice = false;
+    if (!mobileDevice) {
+        if (document.body.clientWidth < 750) {
+            positionMessagesLeft = `-${canvasWidth * 0.95}px`;
+            positionMessagesTop = `${canvasHeight * 0.035}px`;
+        }
+        else {
+            positionMessagesLeft = `-${canvasWidth * 1.23}px`;
+            positionMessagesTop = `${canvasHeight * 0.0485}px`;
+        }
+
+    }
+    else {
+        positionMessagesLeft = `-${canvasWidth * 0.95}px`;
+        positionMessagesTop = `${canvasHeight * 0.07}px`;
+    }
+};
+deviceType();
+newGamE();
+checkNewPlayer(namePlayer);
+function checkNewPlayer (){
+    if (!namePlayer) {
+        visible.style.display = 'none';
+        blockStartGame.style.display = 'flex';
+
+        //debugger;
+    }
+    else {
+        visible.style.display = 'flex';
+        blockStartGame.style.display = 'none';
+        
+    }
+}
+function newGamE() {
+    namePlayer = namePlayeR.value;
+    checkNewPlayer(namePlayer);
+    createMessageInfo(score, namePlayer, level);
+}
+
 //blocks for animated messages
-var positionMessagesLeft = `-${canvasWidth * 1.35}px`,
-    positionMessagesTop = `${canvasHeight * 0.0485}px`;
-function createBlocksFunc(width, height, left = positionMessagesLeft, top = positionMessagesTop){
-    creatBlocks(menuOptions);
-    creatBlocks(newGameBlock);
+
+function createBlocksFunc(width, height, left = positionMessagesLeft, top = positionMessagesTop) {
+    if (menuOptions.style.backgroundColor != 'black') {
+        creatBlocks(menuOptions);
+        creatBlocks(newGameBlock);
+        creatBlocks(recordsBlock);
+    }
+    
     function creatBlocks(name) {
         name.style.width = `${width * 0.98}px`;
         name.style.height = `${height}px`;
         name.style.position = 'absolute';
+        name.style.opacity = '0';
         name.style.left = left;
         name.style.top = top;
         name.style.backgroundColor = 'black';
@@ -100,17 +163,7 @@ createBlocksFunc(canvasWidth, canvasHeight);
 const mediaQuery1 = window.matchMedia('(max-width: 749px)');
 const mediaQuery2 = window.matchMedia('(min-width: 751px)');
 var flag = false;
-//check if mobile device and landscape screen
-function deviceType(){
 
-    const ua = navigator.userAgent;
-    if ((/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) ||
-        (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua))) {
-        return mobileDevice = true;
-    }
-    return mobileDevice = false;
-};
-deviceType();
 
 //make figures formes
 const figures = {
@@ -222,6 +275,7 @@ function isValidMove(matrix, cellRow, cellCol) {
 }
 //figure in place
 function placeFigure() {
+    
     //check if figure came out of the gameZone
     for (let row = 0; row < figureCurrent.matrix.length; row++) {
         for (let col = 0; col < figureCurrent.matrix[row].length; col++) {
@@ -230,14 +284,15 @@ function placeFigure() {
                     return showGameOver();
                 }
                 playZone[figureCurrent.row + row][figureCurrent.col + col] = figureCurrent.name;
+                audioMouve.play();;
             }
         }
     }
     //check the rows filled
     for (let row = playZone.length - 1; row >= 0;) {
         if (playZone[row].every(cell => !!cell)) {
-            score += 10;
-            gameInfo(score);
+            audioBoom.play();
+            score += 10;            
             level = Math.floor(score / 100) + 1;
             for (let r = row; r >= 0; r--) {
                 for (let c = 0; c < playZone[r].length; c++) {                    
@@ -248,6 +303,7 @@ function placeFigure() {
         else {
             row--;
         }
+        createMessageInfo(score, namePlayer, level)
     }
     figureCurrent = nextFigure();
 }
@@ -255,6 +311,7 @@ function placeFigure() {
 function showGameOver() {
     cancelAnimationFrame(playAnimation);
     gameOver = true;
+    audiogameOver.play();
     // message Game Over
     context.fillStyle = 'black';
     context.globalAlpha = 0.75;
@@ -272,7 +329,7 @@ window.addEventListener("keydown", function (EO) {
     EO = EO || window.event;
     EO.preventDefault();
     if (gameOver) return;
-
+    audioClick.play();
     if (EO.keyCode === 37 || EO.keyCode === 39) {
         const col = EO.keyCode === 37 ? figureCurrent.col - 1 : figureCurrent.col + 1;
         if (isValidMove(figureCurrent.matrix, figureCurrent.row, col)) {
@@ -302,16 +359,17 @@ if (iconMenu) {
     iconMenu.addEventListener('click', function (e) {
         iconMenu.classList.toggle('_active');
         menu.classList.toggle('_active');
+        pause1();
     });
 }
 
 
 //listen buttons
 
-buttonLeft.addEventListener('touchstart', leftTouch, false);
-buttonRight.addEventListener('touchstart', rightTouch, false);
-buttonRotate.addEventListener('touchstart', rotateTouch, false);
-buttonDown.addEventListener('touchstart', downTouch, false);
+buttonLeft.addEventListener('click', leftTouch, false);
+buttonRight.addEventListener('click', rightTouch, false);
+buttonRotate.addEventListener('click', rotateTouch, false);
+buttonDown.addEventListener('click', downTouch, false);
 function leftTouch() {
     const col = figureCurrent.col - 1;
     if (isValidMove(figureCurrent.matrix, figureCurrent.row, col)) {
@@ -339,22 +397,43 @@ function downTouch() {
         return;
     }
     figureCurrent.row = row;
-    // check record
-    if (score > record) {
-        record = score;
-        localStorage.record = record;
-        bestPlayer = namePlayer;
-        localStorage.recordName = recordName;
+}
+//swipe realisation(to the left)
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+var xDown = null;
+var yDown = null;
+
+function handleTouchStart(evt) {
+    xDown = evt.touches[0].clientX;
+    yDown = evt.touches[0].clientY;
+};
+
+function handleTouchMove(evt) {
+    if (!xDown || !yDown) {
+        return;
     }
-    //storage
-    var Storage_size = localStorage.length;
-    if (Storage_size > 0) {
-        record = localStorage.record;
-        bestPlayer = localStorage.bestPlayer;
+    var xUp = evt.touches[0].clientX;
+    var yUp = evt.touches[0].clientY;
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
+        if (xDiff > 0) {
+            /* left swipe */
+
+                pause1(newGamesFlag);
+
+        } 
     }
+    /* reset values */
+    xDown = null;
+    yDown = null;
+};
     //start New Game
     function gameStart() {
-       // debugger;
+       //debugger;
+        
         if (pauseFlag) { pause1(newGamesFlag) };
         level = 1;
         score = 0;
@@ -369,8 +448,9 @@ function downTouch() {
             game();
             gameOver = false;
         }
+     
     }
-}
+
 //size of text
 function textFonts(){
     if (document.body.clientWidth > 900) {
@@ -392,38 +472,23 @@ function createMessages(name, message, text = textFonts(), align = 'center') {
     name.style.color = 'white';
     name.style.textAlign = align;
     name.innerHTML = message;
-    //name.style.width = canvasWidth * 1.5;
-    //name.style.height = canvasHeight * 0.75;
+    //console.log('yes');
 }
-var messageOptionsBlock;
-if (!messageOptionsBlock) {
-    messageOptionsBlock = '<div class="optionsMessage"><p>LEFT&emsp;&emsp;&larr;</p><p>RIGHT&emsp;&thinsp;&thinsp;&rarr;</p><p>DOWN&emsp;&thinsp;&thinsp;&thinsp;&thinsp;&darr;</p><p>ROTATE&emsp;&thinsp;&uarr;</p></div>';
-    var messageNewGame = `<div class="messageNewGame"><p>start new game?</p><p><button id="yes" href="#" onclick="newGames()">YES</button><p><button id="no"href="#" onclick="gameStart()">NO</button></div>`;
+
+var messageOptionsBlock = '<div class="optionsMessage"><p><p></p>LEFT&emsp;&emsp;&larr;</p><p>RIGHT&emsp;&thinsp;&thinsp;&rarr;</p><p>DOWN&emsp;&thinsp;&thinsp;&thinsp;&thinsp;&darr;</p><p>ROTATE&emsp;&thinsp;&uarr;</p><p>ROTATE&emsp;&thinsp;&uarr;</p><button id="continue "href="#" onclick="pause1()">continue</button></p></div>';
+var messageNewGame = `<div class="messageNewGame"><p>start new game?</p><p><button id="yes" href="#" onclick="gameStart()">YES</button></p><p><button id="no"href="#" onclick="pause1()">NO</button></p></div>`;    
+var messageRotateInfo = '<div class=""><p>rotate display</p></div>';
+
+createMessages(textOptions, messageOptionsBlock);
+createMessages(newGameBlock, messageNewGame);    
+createMessages(rotateDisplay, messageRotateInfo, 14, 'left', score = 0);
+
+
+function createMessageInfo(score, Name, level){
     var messageGameInfo = `<div class="infoGame"><p>level:&emsp;&thinsp; ${level}&emsp;points:&emsp; ${score}</p><p>name:&emsp;${namePlayer}&emsp;</p><p>record:&emsp;${record} </a></div>`;
-    var messageRotateInfo = '<div class=""><p>rotate display</p></div>';
-    createMessages(textOptions, messageOptionsBlock);
-    createMessages(newGameBlock, messageNewGame);
     createMessages(infoGame, messageGameInfo, 14, 'left');
-    createMessages(rotateDisplay, messageRotateInfo, 14, 'left');
-    console.log('yes');
 }
-
-/*
-var yes = document.getElementById('yes');
-console.log(yes);
-var no = document.getElementById('no');
-*/
-
-//createMessages(wrapper, messageRotateInfo);
-//console.log(infoGame);
-/*
-yes.addEventListener('click', function (e) {
-    newGames();
-});
-no.addEventListener('click', function (e) {
-    gameStart();
-});
-*/
+createMessageInfo(score, namePlayer, level)
 
 //show animation messages
 function transitionON(name) {
@@ -441,7 +506,7 @@ function transitions(name,transitionsFlag) {
     if (!transitionsFlag) {
         transitionsFlag = true;
         if (!pauseFlag) {
-            pause1();
+            pause1(transitionsFlag);
             pauseFlag = true;
             transitionON(name);
         }
@@ -459,9 +524,14 @@ function transitions(name,transitionsFlag) {
         pauseGame.innerText = 'continue';
     }
 }
+
 function newGames() {
     checkPause(menuOptions);
     transitions(newGameBlock, newGamesFlag);
+    if (mobileDevice || document.body.clientWidth < 750) {
+       // menu.style.display = 'none';
+        menu.className = 'menuBody';
+    }
 }
 
 function checkPause(name) {
@@ -473,6 +543,10 @@ function checkPause(name) {
 function options() {
     checkPause(newGameBlock);
     transitions(menuOptions, optionsFlag);
+    if (mobileDevice || document.body.clientWidth < 750) {
+        // menu.style.display = 'none';
+        menu.className = 'menuBody';
+    }
 }
 function rotateDispleY() {
     if (rotateFlag) {
@@ -490,10 +564,122 @@ function pause1(transitionsFlag) {
         pauseFlag = false;
         transitionsFlag = false;
         pauseGame.innerText = 'pause';
+        if (menu.class = 'menuBody _active') {
+            menu.className = 'menuBody';
+        }
         transitionOff(menuOptions);
         transitionOff(newGameBlock);
     }
 
+}
+
+
+function records() {
+    checkPause(menuOptions);
+    checkPause(newGameBlock);
+    transitions(recordsBlock, recordsFlag);
+    if (mobileDevice || document.body.clientWidth < 750) {
+        // menu.style.display = 'none';
+        menu.className = 'menuBody';
+    }
+    function func(target) {
+        //var a = target;
+        var out = [];
+        var k;
+        for (var i in target) {
+            var tmp = {
+                key: i,
+                value: target[i]
+            };
+            tmp[i] = tmp.value;
+            tmp.toString = function () { return '"' + this.key + '": "' + this.value + '"' }
+            out.push(tmp);
+        };
+
+        out.sort(function (a, b) { return (-parseInt(a.value) + parseInt(b.value)) });
+        //recordsPlayers = ('result: \n', out.join(',\n'));
+        //recordsPlayers = out;
+        recordsPlayers = (out.join("\r\n"));
+        return recordsPlayers;
+    }
+    var texT = func(target);
+    texT.replace(' ', '');
+    console.log(texT);
+    recordsMess.innerText = `${texT}`;
+    createMessages(recordsBlock, texT);
+    console.log(recordsBlock);
+}
+
+// storage data in server
+storeDataAjax(namePlayer, score);
+function storeDataAjax(namePlayer, scorePlayer) {
+    var a = document.getElementsByTagName('div');
+    var ajaxHandlerScript = "https://fe.it-academy.by/AjaxStringStorage2.php";
+    var updatePassword;
+    var stringName = 'Potrebchuk_TEST_INFO';
+    var info, arr;
+    var name, score, record, result;
+    var infoPlayer = {};
+
+    readData();
+    function readData() {
+        result = storeInfo();
+        function storeInfo() {
+            name = `${namePlayer}`;
+            score = scorePlayer;
+            infoPlayer[`${name}`] = score;
+            //console.log(infoPlayer);
+            updatePassword = Math.random();
+            $.ajax({
+                url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
+                data: { f: 'LOCKGET', n: stringName, p: updatePassword },
+                success: restoreInfo, error: errorHandler
+            }
+            );
+        }
+        function restoreInfo() {
+            $.ajax(
+                {
+                    url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
+                    data: { f: 'READ', n: stringName, p: updatePassword },
+                    success: readReady, error: errorHandler
+                }
+            );
+        }
+        function readReady(callresult) {
+            if (callresult.error != undefined)
+                alert(callresult.error);
+            else if (callresult.result != "") {
+                info = JSON.parse(callresult.result);
+                target = Object.assign(info, infoPlayer);
+                storeInfO();
+
+            }
+        }
+    }
+    function storeInfO() {
+        $.ajax({
+            url: ajaxHandlerScript, type: 'POST', cache: false, dataType: 'json',
+            data: { f: 'UPDATE', n: stringName, v: JSON.stringify(target), p: updatePassword },
+            success: updateReady, error: errorHandler
+        }
+           
+        );
+        result = target;
+    }
+
+    function updateReady(callresult) {
+        if (callresult.error != undefined)
+            alert(callresult.error);
+    }
+
+    function errorHandler(jqXHR, statusStr, errorStr) {
+        alert(statusStr + ' ' + errorStr);
+    }
+
+        if (count > 59) {
+            return records(result);
+        }   
 }
 //check device
 function device() {
@@ -515,13 +701,9 @@ function device() {
         visible.style.flexDirection = 'row';
         gameInfoS.style.order = '3';
         commun.style.order = '2';
-        visible.style.width = 40 + 'vh';        
+        visible.style.width = 40 + 'vh';
         createBlocksFunc(canvasWidth, canvasHeight);
     }
-    createMessages(textOptions, messageOptionsBlock);
-    createMessages(newGameBlock, messageNewGame);
-    createMessages(infoGame, messageGameInfo, 14, 'left');
-    //gabarits(visible.offsetWidth * 0.8);
 }
 device();
 //game
@@ -543,20 +725,27 @@ function game() {
         }
     }
     // check if screen changed
-    if ((mobileDevice && (document.body.clientWidth > document.body.clientHeight))) {
-        rotateFlag = true;
-        pauseFlag = true;
-        rotateDispleY();
-        //console.log('yes');        
+    if ((mobileDevice && (document.body.clientWidth > document.body.clientHeight)) || pauseFlag) {
+        if ((mobileDevice && (document.body.clientWidth > document.body.clientHeight))) {
+            rotateFlag = true;
+            pauseFlag = true;
+            rotateDispleY();
+            gameFlag = false;
+            //console.log('yes');        
+        }
+        else if (!gameFlag){
+            rotateFlag = false;
+            rotateDisplay.style.display = 'none';
+            visible.style.display = 'flex';
+            pauseFlag = false;
+             gameFlag = false;
+        }
+        figureCurrent.row;
+       
     }
-    else {
-        rotateFlag = false;
-        rotateDisplay.style.display = 'none';
-        visible.style.display = 'flex';
-        
-    }
-    if (figureCurrent) {      
-        
+
+    else if (figureCurrent) {      
+        //console.log('yes');
         if (++count > 60) {
             
             figureCurrent.row++;
@@ -575,5 +764,6 @@ function game() {
             }
         }
     }
+
 }
 playAnimation = requestAnimationFrame(game);
