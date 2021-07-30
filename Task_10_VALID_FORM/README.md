@@ -1,4 +1,4 @@
-Make up the VALID_FORM project according to the sample.
+Make up the VALID_FORM project according to the sample.</br>
 Make validation of input values; think over the validation rules yourself,
 describe them in the comments; at least an empty (initial) value for each of the fields
 should be considered erroneous.
