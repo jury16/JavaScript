@@ -1,5 +1,0 @@
-Rewrite HW VOWELS (counting vowels in a string) without using loops,
-in three ways:
-using the forEach array method,
-using the array method filter,
-using the array reduce method.
