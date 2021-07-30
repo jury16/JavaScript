@@ -1,5 +1,0 @@
-Write a "clean" function to efficiently calculate the number of Russian vowels
-letters in a line.
-Regular expressions (who can) do not use.
-Ask the user for a string. Print to the console the number of Russian vowels in
-her.
